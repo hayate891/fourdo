@@ -854,7 +854,6 @@ int __fastcall ARMCPU::Execute(unsigned int MCLKs)
     
 	for(CYCLES=MCLKs; CYCLES>0; CYCLES-=SCYCLE)
 	{
-		
 		cmd=mreadw(REG_PC&(~3));
 			
 		REG_PC+=4;
@@ -1776,7 +1775,7 @@ void inline __fastcall ARMCPU::decode_swi(unsigned int cmd)
 	SPSR[arm_mode_table[ARM_MODE_CODE_SVC]]=CPSR;  // Save CPSR in SPSR_svc  
 	SETI(1);						               // Set interrupt status flag
 	SETM(ARM_MODE_CODE_SVC);				       // Go into supervisor mode
-	load(14,REG_PC+4);							   // Save address of instruction (+4) into R14_svc
+	load(14,REG_PC);							   // Save address of next instruction into R14_svc
 	REG_PC=0x00000008;			                   // Force PC to fetch next instruction from vector table
 	CYCLES-=SCYCLE+NCYCLE;
 	

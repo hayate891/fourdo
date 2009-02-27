@@ -22,9 +22,9 @@ typedef unsigned char  uint8;
 typedef unsigned short uint16;
 typedef unsigned int   uint32;
 
+// This structure stores all the registers
 struct ARM_CoreState
 {
-	//определение регистров ARM60
 	uint32 USER[16];
 	uint32 CASH[7];
     uint32 SVC[2];
