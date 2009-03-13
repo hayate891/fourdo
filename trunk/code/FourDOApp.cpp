@@ -31,10 +31,11 @@ bool FourDOApp::OnInit()
    logo.Append( "============================================================\r\n" );
    logo.Append( "FourDO - An open-source HLE 3DO Emulator\r\n" );
    logo.Append( "============================================================\r\n" );
-   parser.AddSwitch( "?",  "",          "Displays usage information", wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_OPTION_HELP );
-   parser.AddSwitch( "h",  "help",      "Displays usage information", wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_OPTION_HELP );
-   parser.AddOption( "li", "loadimage", "Loads a CD image file",      wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL );
-   parser.AddOption( "lc", "loadcode",  "Loads a file as ARM60 code", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL );
+   parser.AddSwitch( "?",  "",          "Displays usage information",		wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_OPTION_HELP );
+   parser.AddSwitch( "h",  "help",      "Displays usage information",		wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_OPTION_HELP );
+   parser.AddSwitch( "d",  "debug",     "Enables debug mode",				wxCMD_LINE_PARAM_OPTIONAL );
+   parser.AddOption( "li", "loadimage", "Loads a CD image file",			wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL );
+   parser.AddOption( "lc", "loadcode",  "Loads a file as ARM60 code",		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL );
    parser.SetLogo( logo );
    parser.EnableLongOptions();
 
