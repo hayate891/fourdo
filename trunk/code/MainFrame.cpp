@@ -3,9 +3,8 @@
 
 #include "wx/settings.h"
 
-#define  REFRESH_DELAY    50
+#define  REFRESH_DELAY     50
 #define  ROM_LOAD_ADDRESS  0x00100000
-#define  BIOS_LOAD_ADDRESS 0x03000000
 
 //Status bar
 enum StatusBar
@@ -55,6 +54,59 @@ MainFrame::MainFrame( wxCmdLineParser* parser )
 	// Create a console
 	m_con = new Console();
 	m_con->CPU()->SetPC( ROM_LOAD_ADDRESS );
+
+	///////////////////////////////////////////////////
+	///////////////////////////////////////////////////
+	///////////////////////////////////////////////////
+	// KILL ME
+	wxFile file;
+	
+	// Load the code into memory
+	if( parser->Found( "d" ) )
+	{
+		if( file.Open( "C:\\FourDO\\roms\\debug.fz10.ram" ) )
+		{
+			file.Read( m_con->DMA()->GetRAMPointer( 0 ), 0x30000 );
+			file.Close(); 
+		}
+	}
+		
+	// Put the stack pointers somewhere
+	m_con->CPU()->ARM.USER[13] = 0x00040000;
+	m_con->CPU()->ARM.SVC[0]   = 0x00041000;
+	m_con->CPU()->ARM.ABT[0]   = 0x00042000;
+	m_con->CPU()->ARM.IRQ[0]   = 0x00043000;
+	m_con->CPU()->ARM.UND[0]   = 0x00044000;
+	m_con->CPU()->ARM.FIQ[5]   = 0x00045000;
+	
+	// Set R7 (points to kernel function table)
+	m_con->CPU()->ARM.USER[7]  = 0x00020230;
+	
+	//m_con->DMA()->SetWord(0,  0);
+	//m_con->DMA()->SetWord(4,  3925886382);
+	//m_con->DMA()->SetWord(8,  3925886486);
+	//m_con->DMA()->SetWord(12, 3925886392);
+	//m_con->DMA()->SetWord(16, 3925886405);
+	//m_con->DMA()->SetWord(20, 0);
+	//m_con->DMA()->SetWord(24, 3925886582);
+	//m_con->DMA()->SetWord(28, 3925886586);
+
+	//m_con->DMA()->SetWord(0x11854, 0xE92D0100);
+	//m_con->DMA()->SetWord(0x11858, 0xE10F8000);
+	//m_con->DMA()->SetWord(0x1185C, 0xE3C88080);
+	//m_con->DMA()->SetWord(0x11860, 0xE121F008);
+	//m_con->DMA()->SetWord(0x11864, 0xEA00295B);
+
+	//m_con->DMA()->SetWord(0x11868, 0xE92D4F00);
+	//m_con->DMA()->SetWord(0x1186C, 0xE14F8000);
+	//m_con->DMA()->SetWord(0x11870, 0xE2188003);
+	//m_con->DMA()->SetWord(0x11874, 0x1AFFFFF6);
+	//m_con->DMA()->SetWord(0x11878, 0xE51EE004);
+	//m_con->DMA()->SetWord(0x1187C, 0xE3DEE4FF);
+	
+	///////////////////////////////////////////////////
+	///////////////////////////////////////////////////
+	///////////////////////////////////////////////////
 
 	/////////////////////
 	// GUI Setup.
@@ -285,22 +337,6 @@ void MainFrame::ConsoleLoadCode ( wxString fileName )
 	file.Read( m_con->DMA()->GetRAMPointer( ROM_LOAD_ADDRESS ), file.Length () );
 	file.Close();
 
-	// Load BIOS
-	file.Open ("C:\\FourDO\\Freedo\\bios.rom" );
-	file.Read( m_con->DMA()->GetRAMPointer( BIOS_LOAD_ADDRESS ), file.Length () );
-	file.Close();
-	
-	// Set up vector table
-	m_con->DMA()->SetWord(0,  0);
-	m_con->DMA()->SetWord(4,  3925886382);
-	m_con->DMA()->SetWord(8,  3925886486);
-	m_con->DMA()->SetWord(12, 3925886392);
-	m_con->DMA()->SetWord(16, 3925886405);
-	m_con->DMA()->SetWord(20, 0);
-	m_con->DMA()->SetWord(24, 3925886582);
-	m_con->DMA()->SetWord(28, 3925886586);
-
-	// Initialize the PC
 	m_con->CPU()->SetPC( ROM_LOAD_ADDRESS );
 	
 	m_loadIso = false;
