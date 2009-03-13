@@ -17,8 +17,9 @@ public:
    DMAController*  DMA ();
 
 private:
-   DMAController*  m_DMA;
    ARMCPU*         m_CPU;
+   DMAController*  m_DMA;
+   
 };
 
 #endif //_INC_CONSOLE
