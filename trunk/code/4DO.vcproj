@@ -344,6 +344,18 @@
 				RelativePath=".\ARMCPU.h"
 				>
 			</File>
+			<File
+				RelativePath=".\ARMRegisters.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SWIHandler.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SWIHandler.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

@@ -16,26 +16,9 @@
 
 #include <math.h>
 #include "types.h"
+#include "ARMRegisters.h"
 #include "DMAController.h"
-
-// This structure stores all the registers
-struct ARM_CoreState
-{
-	uint32 USER[16];
-	uint32 CASH[7];
-    uint32 SVC[2];
-    uint32 ABT[2];
-    uint32 FIQ[7];
-    uint32 IRQ[2];
-    uint32 UND[2];
-    uint32 SPSR[6];
-	uint32 CPSR;
-	
-	bool nFIQ; //внешнее прерывание, устанавливается другими процессорами
-	bool SecondROM;	//селектор ПЗУ (рум и шрифт)	
-	bool MAS_Access_Exept;	//заведено для исключений доступа к памяти
-	int CYCLES;	//здесь считаем циклы			
-};
+#include "SWIHandler.h"
 
 class ARMCPU
 {
@@ -44,7 +27,8 @@ public:
 	~ARMCPU();
 
 	DMAController*  DMA;
-	ARM_CoreState   ARM;
+	SWIHandler*     SWI;
+	ARMRegisters    ARM;
 
 	unsigned int __fastcall GetFIQ();
 	void __fastcall SetFIQ( void );
