@@ -1,5 +1,6 @@
 #include "ARMCPU.h"
-#include "string.h"
+#include "SWIHandler.h"
+#include <string>
 
 // ARM Instruction masks
 #define ARM_MUL_MASK    0x0fc000f0
@@ -127,13 +128,11 @@ return (x>>24) | ((x>>8)&0x0000FF00L) | ((x&0x0000FF00L)<<8) | (x<<24);
 
 ARMCPU::ARMCPU ()
 {
-SWI = new SWIHandler();
 Reset();
 }
 
 ARMCPU::~ARMCPU ()
 {
-delete SWI;
 }
 
 void __fastcall ARMCPU::SetFIQ( void )
@@ -1774,27 +1773,8 @@ void inline __fastcall ARMCPU::decode_swi(unsigned int cmd)
 	
 	swi = cmd & 0x00FFFFFF;
 
-	// JMK NOTE: This is the goal line! Woo!
-	SWI->handleSWI( swi, &ARM, DMA );
+	std::map<uint32, fourdo::swi::swiHandler>::iterator it = fourdo::swi::swiToHandlerMap.find(swi);
 
-	/*
-	SPSR[arm_mode_table[ARM_MODE_CODE_SVC]]=CPSR;  // Save CPSR in SPSR_svc  
-	SETI(1);						               // Set interrupt status flag
-	SETM(ARM_MODE_CODE_SVC);				       // Go into supervisor mode
-	load(14,REG_PC);							   // Save address of next instruction into R14_svc
-	REG_PC=0x00000008;			                   // Force PC to fetch next instruction from vector table
-	*/
-	
-    
-    
-    /*
-    SPSR[arm_mode_table[ARM_MODE_CODE_SVC]]=CPSR;
-    
-    SETI(1);
-    SETM(ARM_MODE_CODE_SVC);
-
-	load(14,REG_PC);
-    
-    REG_PC=0x00000008;  
-	*/
+	if (it != fourdo::swi::swiToHandlerMap.end())
+		it->second(&ARM, DMA);
 }

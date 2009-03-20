@@ -18,7 +18,6 @@
 #include "types.h"
 #include "ARMRegisters.h"
 #include "DMAController.h"
-#include "SWIHandler.h"
 
 class ARMCPU
 {
@@ -27,7 +26,6 @@ public:
 	~ARMCPU();
 
 	DMAController*  DMA;
-	SWIHandler*     SWI;
 	ARMRegisters    ARM;
 
 	unsigned int __fastcall GetFIQ();
