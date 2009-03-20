@@ -1,5 +1,6 @@
 #include "MainFrame.h"
 #include "ImageViewer.h"
+#include "KernelFaker.h"
 
 #include "wx/settings.h"
 
@@ -79,9 +80,30 @@ MainFrame::MainFrame( wxCmdLineParser* parser )
 	m_con->CPU()->ARM.UND[0]   = 0x00044000;
 	m_con->CPU()->ARM.FIQ[5]   = 0x00045000;
 	
-	// Set R7 (points to kernel function table)
+	// Set up registers
+	m_con->CPU()->ARM.USER[0]  = 0x00000000;
+	m_con->CPU()->ARM.USER[1]  = 0x00000000;
+	m_con->CPU()->ARM.USER[2]  = 0x00000000;
+	m_con->CPU()->ARM.USER[3]  = 0x00000000;
+	m_con->CPU()->ARM.USER[4]  = 0xFFFFFFFC;
+	m_con->CPU()->ARM.USER[5]  = 0x00000000;
+	m_con->CPU()->ARM.USER[6]  = 0x00000000;
 	m_con->CPU()->ARM.USER[7]  = 0x00020230;
+	//m_con->CPU()->ARM.USER[7]  = 0x00021230;
+	m_con->CPU()->ARM.USER[8]  = 0x00000000;
+	m_con->CPU()->ARM.USER[9]  = 0x400002CC;
+	m_con->CPU()->ARM.USER[10] = 0x0007EFE0;
+	m_con->CPU()->ARM.USER[11] = 0x00000000;
+	m_con->CPU()->ARM.USER[12] = 0x00078508;
 	
+	sprintf( (char*)m_con->DMA()->GetRAMPointer( m_con->CPU()->ARM.USER[13] ), "$app/Launchme" );
+	
+	///////////////////////////
+	// Fake out the Kernel!
+	KernelFaker kernelFaker;
+	kernelFaker.InitializeFakeKernel( m_con->DMA() );
+
+
 	//m_con->DMA()->SetWord(0,  0);
 	//m_con->DMA()->SetWord(4,  3925886382);
 	//m_con->DMA()->SetWord(8,  3925886486);

@@ -1,4 +1,5 @@
 #include "Console.h"
+#include "KernelFaker.h"
 
 Console::Console ()
 {
