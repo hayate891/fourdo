@@ -272,6 +272,14 @@
 				RelativePath=".\DMAController.h"
 				>
 			</File>
+			<File
+				RelativePath=".\KernelFaker.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\KernelFaker.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Global"
