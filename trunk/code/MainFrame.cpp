@@ -62,16 +62,6 @@ MainFrame::MainFrame( wxCmdLineParser* parser )
 	// KILL ME
 	wxFile file;
 	
-	// Load the code into memory
-	if( parser->Found( "d" ) )
-	{
-		if( file.Open( "C:\\FourDO\\roms\\debug.fz10.ram" ) )
-		{
-			file.Read( m_con->DMA()->GetRAMPointer( 0 ), 0x30000 );
-			file.Close(); 
-		}
-	}
-		
 	// Put the stack pointers somewhere
 	m_con->CPU()->ARM.USER[13] = 0x00040000;
 	m_con->CPU()->ARM.SVC[0]   = 0x00041000;
@@ -88,8 +78,7 @@ MainFrame::MainFrame( wxCmdLineParser* parser )
 	m_con->CPU()->ARM.USER[4]  = 0xFFFFFFFC;
 	m_con->CPU()->ARM.USER[5]  = 0x00000000;
 	m_con->CPU()->ARM.USER[6]  = 0x00000000;
-	m_con->CPU()->ARM.USER[7]  = 0x00020230;
-	//m_con->CPU()->ARM.USER[7]  = 0x00021230;
+	m_con->CPU()->ARM.USER[7]  = 0x00021230;
 	m_con->CPU()->ARM.USER[8]  = 0x00000000;
 	m_con->CPU()->ARM.USER[9]  = 0x400002CC;
 	m_con->CPU()->ARM.USER[10] = 0x0007EFE0;

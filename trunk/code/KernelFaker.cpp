@@ -1,4 +1,5 @@
 #include "KernelFaker.h"
+#include "BitMath.h"
 
 #define FAKE_KERNEL_BASE   ( 0x00021230 ) // Memory location of fake kernel table.
 #define KERNEL_OFFSET_MIN  (-0x0230 )	  // Minimum offset for an entry
@@ -59,10 +60,10 @@ void KernelFaker::InitializeFakeKernel( DMAController* DMA )
 	handlerPtr = handlerPtrBase;
 	for( int functionNum = 0; functionNum < KERNEL_ENTRY_COUNT; functionNum++ )
 	{
-		*tablePtr = FAKE_HANDLER_BASE + (functionNum * (FAKE_HANDLER_SIZE*4));
+		*tablePtr = ByteSwap( FAKE_HANDLER_BASE + (functionNum * (FAKE_HANDLER_SIZE*4)) );
 		
-		*(handlerPtr)   = SWI_INSTRUCTION_MASK | SWI_NUM_UNKNOWN_KERNEL_ENTRY;
-		*(handlerPtr+1) = RET_INSTRUCTION;
+		*(handlerPtr)   = ByteSwap( SWI_INSTRUCTION_MASK | (SWI_NUM_UNKNOWN_KERNEL_ENTRY+functionNum) );
+		*(handlerPtr+1) = ByteSwap( RET_INSTRUCTION );
 		
 		// Move to next function handler address.
 		tablePtr++;
@@ -79,6 +80,6 @@ void KernelFaker::InitializeFakeKernel( DMAController* DMA )
 		handlerPtr = handlerPtrBase + ((entry.offset-KERNEL_OFFSET_MIN) / 4);
 		
 		// Overwrite with the given SWI number.
-		*(handlerPtr) = SWI_INSTRUCTION_MASK | entry.swiNumber;
+		*(handlerPtr) = ByteSwap( SWI_INSTRUCTION_MASK | entry.swiNumber );
 	}
 }
