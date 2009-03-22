@@ -50,7 +50,7 @@ void KernelFaker::InitializeFakeKernel( DMAController* DMA )
 	uint32* handlerPtr;
 	uint32* handlerPtrBase;
 	
-	tablePtrBase   = (uint32*)DMA->GetRAMPointer( FAKE_KERNEL_BASE + KERNEL_OFFSET_MIN );
+	tablePtrBase   = (uint32*)DMA->GetRAMPointer( FAKE_KERNEL_BASE );
 	handlerPtrBase = (uint32*)DMA->GetRAMPointer( FAKE_HANDLER_BASE );
 	
 	///////////////////////////////////////////
@@ -75,9 +75,10 @@ void KernelFaker::InitializeFakeKernel( DMAController* DMA )
 	for( int entryNum = 0; entryNum < cnt_of_array(kernelTable); entryNum++ )
 	{
 		kernelTableEntry entry = kernelTable[entryNum];
-		
+		int	functionNum = (entry.offset-KERNEL_OFFSET_MIN) / 4;
+	 	
 		// Find function pointer.
-		handlerPtr = handlerPtrBase + ((entry.offset-KERNEL_OFFSET_MIN) / 4);
+		handlerPtr = handlerPtrBase + (functionNum * FAKE_HANDLER_SIZE);
 		
 		// Overwrite with the given SWI number.
 		*(handlerPtr) = ByteSwap( SWI_INSTRUCTION_MASK | entry.swiNumber );
