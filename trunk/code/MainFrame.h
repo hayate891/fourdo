@@ -12,7 +12,6 @@
 #include "types.h"
 #include "Console.h"
 #include "ISOBrowser.h"
-#include "filesystem\file.h"
 
 #include "fourdo.xpm" // Include the application's icon
 
@@ -40,8 +39,6 @@ private:
 	void BrowseIso(wxString fileName);
 
 	void ConsoleReset();
-	void ConsoleLoadIso( wxString imageFileName );
-	void ConsoleLoadCode( wxString imageFileName );
 	
 	Console* m_con;
 	bool     m_consoleRunning;

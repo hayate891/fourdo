@@ -22,6 +22,8 @@ public:
 	uint  GetWord( uint address );
 	void  SetWord( uint address, uint  value );
 	uchar* GetRAMPointer( uint address );
+	
+	void Reset();
 
 private:
 	uchar* m_DRAM;
