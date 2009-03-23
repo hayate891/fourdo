@@ -1176,12 +1176,21 @@ int __fastcall ARMCPU::Execute(unsigned int MCLKs)
 				
 					break;
 
-			case 0xf:	//SWI		  				
-					// TODO: IMPORT SWI CODE
-					decode_swi(cmd);			  
+			case 0xf:	//SWI	
+				{
+					CYCLES-=SCYCLE+NCYCLE; // +2S+1N
+
+					uint32  swi = cmd & 0x00FFFFFF;
+
+					std::map<uint32, fourdo::swi::swiHandler>::iterator it = fourdo::swi::swiToHandlerMap.find(swi);
+
+					if (it != fourdo::swi::swiToHandlerMap.end())
+						it->second(&ARM, DMA);
+									  
 					CYCLES-=0;
 					
 					break;
+				}
 			//---------  
 			default:	//сопроцессор
 					//sprintf(str,"*PC: 0x%8.8X undefined\n",REG_PC);
@@ -1449,7 +1458,12 @@ void __inline ARMCPU::bdt_core(unsigned int opc)
 						}
 						while(list)
 						{
-							if(list&0x8000){mwritew(addr,rreadusr(i));addr-=4;base-=4;}
+							if(list&0x8000)
+							{
+								mwritew(addr,rreadusr(i));
+								addr-=4;
+								base-=4;
+							}
 							i--;
 							list<<=1;
 						}
@@ -1487,7 +1501,12 @@ void __inline ARMCPU::bdt_core(unsigned int opc)
 					{
 						while(list)
 						{
-							if(list&1){mwritew(addr,RON_USER[i]);addr+=4;base+=4;}
+							if(list&1)
+							{
+								mwritew(addr,RON_USER[i]);
+								addr+=4;
+								base+=4;
+							}
 							i++;
 							list>>=1;
 						}
@@ -1513,7 +1532,12 @@ void __inline ARMCPU::bdt_core(unsigned int opc)
 						}
 						while(list)
 						{
-							if(list&0x8000){addr-=4;mwritew(addr,RON_USER[i]);base-=4;}
+							if(list&0x8000)
+							{
+								addr-=4;
+								mwritew(addr,RON_USER[i]);
+								base-=4;
+							}
 							i--;
 							list<<=1;							
 						}
@@ -1528,7 +1552,12 @@ void __inline ARMCPU::bdt_core(unsigned int opc)
 						}
 						while(list)
 						{
-							if(list&0x8000){mwritew(addr,RON_USER[i]);addr-=4;base-=4;}
+							if(list&0x8000)
+							{
+								mwritew(addr,RON_USER[i]);
+								addr-=4;
+								base-=4;
+							}
 							i--;
 							list<<=1;							
 						}
@@ -1763,18 +1792,4 @@ __inline unsigned int* ARMCPU::can_multy_write_direct(unsigned int base, unsigne
 	}
 	return NULL;
 */
-}
-
-void inline __fastcall ARMCPU::decode_swi(unsigned int cmd)
-{
-    CYCLES-=SCYCLE+NCYCLE; // +2S+1N
-
-	uint32  swi;
-	
-	swi = cmd & 0x00FFFFFF;
-
-	std::map<uint32, fourdo::swi::swiHandler>::iterator it = fourdo::swi::swiToHandlerMap.find(swi);
-
-	if (it != fourdo::swi::swiToHandlerMap.end())
-		it->second(&ARM, DMA);
 }
