@@ -5,7 +5,6 @@
 #include "wx/settings.h"
 
 #define  REFRESH_DELAY     50
-#define  ROM_LOAD_ADDRESS  0x00100000
 
 //Status bar
 enum StatusBar
@@ -54,70 +53,6 @@ MainFrame::MainFrame( wxCmdLineParser* parser )
 
 	// Create a console
 	m_con = new Console();
-	m_con->CPU()->SetPC( ROM_LOAD_ADDRESS );
-
-	///////////////////////////////////////////////////
-	///////////////////////////////////////////////////
-	///////////////////////////////////////////////////
-	// KILL ME
-	wxFile file;
-	
-	// Put the stack pointers somewhere
-	m_con->CPU()->ARM.USER[13] = 0x00040000;
-	m_con->CPU()->ARM.SVC[0]   = 0x00041000;
-	m_con->CPU()->ARM.ABT[0]   = 0x00042000;
-	m_con->CPU()->ARM.IRQ[0]   = 0x00043000;
-	m_con->CPU()->ARM.UND[0]   = 0x00044000;
-	m_con->CPU()->ARM.FIQ[5]   = 0x00045000;
-	
-	// Set up registers
-	m_con->CPU()->ARM.USER[0]  = 0x00000000;
-	m_con->CPU()->ARM.USER[1]  = 0x00000000;
-	m_con->CPU()->ARM.USER[2]  = 0x00000000;
-	m_con->CPU()->ARM.USER[3]  = 0x00000000;
-	m_con->CPU()->ARM.USER[4]  = 0xFFFFFFFC;
-	m_con->CPU()->ARM.USER[5]  = 0x00000000;
-	m_con->CPU()->ARM.USER[6]  = 0x00000000;
-	m_con->CPU()->ARM.USER[7]  = 0x00021230;
-	m_con->CPU()->ARM.USER[8]  = 0x00000000;
-	m_con->CPU()->ARM.USER[9]  = 0x400002CC;
-	m_con->CPU()->ARM.USER[10] = 0x0007EFE0;
-	m_con->CPU()->ARM.USER[11] = 0x00000000;
-	m_con->CPU()->ARM.USER[12] = 0x00078508;
-	
-	sprintf( (char*)m_con->DMA()->GetRAMPointer( m_con->CPU()->ARM.USER[13] ), "$app/Launchme" );
-	
-	///////////////////////////
-	// Fake out the Kernel!
-	KernelFaker kernelFaker;
-	kernelFaker.InitializeFakeKernel( m_con->DMA() );
-
-
-	//m_con->DMA()->SetWord(0,  0);
-	//m_con->DMA()->SetWord(4,  3925886382);
-	//m_con->DMA()->SetWord(8,  3925886486);
-	//m_con->DMA()->SetWord(12, 3925886392);
-	//m_con->DMA()->SetWord(16, 3925886405);
-	//m_con->DMA()->SetWord(20, 0);
-	//m_con->DMA()->SetWord(24, 3925886582);
-	//m_con->DMA()->SetWord(28, 3925886586);
-
-	//m_con->DMA()->SetWord(0x11854, 0xE92D0100);
-	//m_con->DMA()->SetWord(0x11858, 0xE10F8000);
-	//m_con->DMA()->SetWord(0x1185C, 0xE3C88080);
-	//m_con->DMA()->SetWord(0x11860, 0xE121F008);
-	//m_con->DMA()->SetWord(0x11864, 0xEA00295B);
-
-	//m_con->DMA()->SetWord(0x11868, 0xE92D4F00);
-	//m_con->DMA()->SetWord(0x1186C, 0xE14F8000);
-	//m_con->DMA()->SetWord(0x11870, 0xE2188003);
-	//m_con->DMA()->SetWord(0x11874, 0x1AFFFFF6);
-	//m_con->DMA()->SetWord(0x11878, 0xE51EE004);
-	//m_con->DMA()->SetWord(0x1187C, 0xE3DEE4FF);
-	
-	///////////////////////////////////////////////////
-	///////////////////////////////////////////////////
-	///////////////////////////////////////////////////
 
 	/////////////////////
 	// GUI Setup.
@@ -149,12 +84,12 @@ MainFrame::MainFrame( wxCmdLineParser* parser )
 	if( parser->Found( "li" ) )
 	{
 		parser->Found( "li", &fileName );
-		this->ConsoleLoadIso( fileName );
+		m_con->loadIso( fileName );
 	}
 	else if( parser->Found( "lc" ) )
 	{
 		parser->Found( "lc", &fileName );
-		this->ConsoleLoadCode( fileName );
+		m_con->loadBinary( fileName );
 	}
 }
 
@@ -243,7 +178,10 @@ void MainFrame::OnMenuFileOpenISO( wxCommandEvent& WXUNUSED( event ) )
 
 	if( !fileName.empty() )
 	{
-		this->ConsoleLoadIso( fileName );
+		if( m_con->loadIso( fileName ) )
+		{
+			m_consoleRunning = true;
+		}
 	}
 }
 
@@ -253,7 +191,10 @@ void MainFrame::OnMenuFileOpenCode( wxCommandEvent& WXUNUSED( event ) )
 
 	if( !fileName.empty() )
 	{
-		this->ConsoleLoadCode( fileName );
+		if( m_con->loadBinary( fileName ) )
+		{
+			m_consoleRunning = true;
+		}
 	}
 }
 
@@ -300,57 +241,9 @@ void MainFrame::ConsoleReset ()
 	// TODO: Properly reset console
 	
 	// Initialize the PC
-	m_con->CPU()->Reset();
+	m_con->Reset();
 	
 	m_loadIso = false;
 	m_fileName = wxEmptyString;
 	m_consoleRunning = false;
-}
-
-void MainFrame::ConsoleLoadIso( wxString fileName )
-{
-	bool  success;
-	uint  fileSize;
-	
-	/////////////////
-	// Load the ISO
-
-	// Open the Launchme of this CD image.
-	uint32_t  bytesRead;
-	File f( fileName );
-
-	success = f.openFile( "/launchme" );
-	if( !success )
-	{
-		// Error opening
-		return;
-	}
-
-	// Load it into memory.
-	fileSize = f.getFileSize();
-	f.read( m_con->DMA ()->GetRAMPointer( ROM_LOAD_ADDRESS ), f.getFileSize (), &bytesRead );
-	
-	// Initialize the PC
-	m_con->CPU()->SetPC( ROM_LOAD_ADDRESS );
-
-	m_loadIso = true;
-	m_fileName = fileName;
-	m_consoleRunning = true;
-}
-
-void MainFrame::ConsoleLoadCode ( wxString fileName )
-{
-	// Open a code file.
-	wxFile file;
-	
-	// Load the code into memory
-	file.Open( fileName );
-	file.Read( m_con->DMA()->GetRAMPointer( ROM_LOAD_ADDRESS ), file.Length () );
-	file.Close();
-
-	m_con->CPU()->SetPC( ROM_LOAD_ADDRESS );
-	
-	m_loadIso = false;
-	m_fileName = fileName;
-	m_consoleRunning = true;
 }

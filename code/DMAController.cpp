@@ -1,5 +1,8 @@
 #include "DMAController.h"
 
+#include "BitMath.h"
+#include <cstdio>
+
 // I found this out of the MESS project's 3do file. 
 // It matches mappings found in the FreeDO project.
 /*
@@ -21,23 +24,7 @@ DMAController::DMAController()
 	m_VRAM = new uchar[ VRAM_SIZE ];
 	m_BIOS = new uchar[ BIOS_SIZE ];
 	
-	// Potentially pointless initialization.
-	for (int x = 0; x < DRAM_SIZE; x++)
-	{
-		m_DRAM[ x ] = 0;
-	}
-
-	// Potentially pointless initialization.
-	for (int x = 0; x < VRAM_SIZE; x++)
-	{
-		m_VRAM[ x ] = 0;
-	}
-
-	// Potentially pointless initialization.
-	for (int x = 0; x < BIOS_SIZE; x++)
-	{
-		m_BIOS[ x ] = 0;
-	}
+	Reset();
 }
 
 DMAController::~DMAController()
@@ -46,6 +33,14 @@ DMAController::~DMAController()
 	delete m_DRAM;
 	delete m_VRAM;
 	delete m_BIOS;
+}
+
+void DMAController::Reset()
+{
+	// Potentially pointless initialization.
+	memset( m_DRAM, 0, DRAM_SIZE );
+	memset( m_VRAM, 0, VRAM_SIZE );
+	memset( m_BIOS, 0, BIOS_SIZE );
 }
 
 uchar DMAController::GetByte(uint address)

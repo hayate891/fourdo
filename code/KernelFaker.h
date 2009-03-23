@@ -15,7 +15,7 @@ public:
 	KernelFaker ();
 	~KernelFaker();
 
-	uint32 getFakeKernelBase();
+	static uint32 getFakeKernelBase();
 	void InitializeFakeKernel( DMAController* DMA );
 };
 
