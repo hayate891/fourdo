@@ -23,31 +23,55 @@ namespace fourdo { namespace swi
 			// % symbol and interpolate it into the string
 			// 
 			size_t start        = 0;
-			size_t substitution = 0;
-			for (int i = 0; i < argc; i++)
+			size_t position     = 0;
+			for (int i = 0; i < argc; )
 			{
-				substitution = format_str.find('%', start);
+				position = format_str.find('%', start);
 
-				if (substitution != std::string::npos)
+				if (position == std::string::npos)
+					break;
+				
+				// 
+				// move past the % we just found
+				// 
+				position++;
+
+				// 
+				// ignore this % if it's followed by another %
+				// 
+				if (format_str.at(position) != '%')				
 				{
 					// 
-					// ignore this % if it's followed by another %
+					// the length of the substring we're substituting (i.e. %lu)
 					// 
-					if (format_str.at(substitution + 1) != '%')				
+					size_t substr_length = position - start;
+
+					// 
+					// the var we will be interpolating into this substr
+					// 
+					void   *var = NULL;
+					uint32 stack_value;
+					
+					if (i < 3)
+						var = argv[i];
+					else
 					{
-						// TODO: handle flags, width, precision, and length
+						stack_value = ByteSwap(*(static_cast<uint32 *>(argv[i])));
+						var = &stack_value;
+					}
 
-						// 
-						// the substring that we'll be appending to our final string
-						// 
-						std:: string temp_format = format_str.substr(start, ((substitution + 2) - start));
-
+					bool finished    = false;
+					bool long_int    = false;
+					bool short_int   = false;
+					bool long_double = false;
+					for (;;)
+					{
 						// 
 						// find out what type we're dealing with
 						// and append this substr along with it's arg
 						// onto the final string
 						// 
-						switch (format_str.at(substitution + 1))
+						switch (format_str.at(position))
 						{
 							// 
 							// int
@@ -56,9 +80,12 @@ namespace fourdo { namespace swi
 							case 'd':
 							case 'o':
 							{
+								finished = true;
+								substr_length++;
+
 								final_str += wxString::Format(
-									temp_format.c_str(), 
-									(i < 3 ? *(static_cast<int *>(argv[i])) : static_cast<int>(ByteSwap(*(static_cast<uint32 *>(argv[i])))))
+									format_str.substr(start, substr_length).c_str(), 
+									*(static_cast<int *>(var))
 								);
 
 								break;
@@ -70,9 +97,12 @@ namespace fourdo { namespace swi
 							case 'x':
 							case 'X':
 							{
+								finished = true;
+								substr_length++;
+
 								final_str += wxString::Format(
-									temp_format.c_str(),
-									(i < 3 ? *(static_cast<unsigned int *>(argv[i])) : static_cast<unsigned int>(ByteSwap(*(static_cast<uint32 *>(argv[i])))))
+									format_str.substr(start, substr_length).c_str(),
+									*(static_cast<unsigned int *>(var))
 								);
 
 								break;
@@ -82,9 +112,12 @@ namespace fourdo { namespace swi
 							// 
 							case 'f':
 							{
+								finished = true;
+								substr_length++;
+
 								final_str += wxString::Format(
-									temp_format.c_str(),
-									(i < 3 ? *(static_cast<float *>(argv[i])) : static_cast<float>(ByteSwap(*(static_cast<uint32 *>(argv[i])))))
+									format_str.substr(start, substr_length).c_str(),
+									*(static_cast<float *>(var))
 								);
 
 								break;
@@ -94,9 +127,12 @@ namespace fourdo { namespace swi
 							// 
 							case 'c':
 							{
+								finished = true;
+								substr_length++;
+
 								final_str += wxString::Format(
-									temp_format.c_str(),
-									(i < 3 ? *(static_cast<char *>(argv[i])) : static_cast<char>(ByteSwap(*(static_cast<uint32 *>(argv[i])))))
+									format_str.substr(start, substr_length).c_str(),
+									*(static_cast<char *>(var))
 								);
 
 								break;
@@ -106,37 +142,95 @@ namespace fourdo { namespace swi
 							// 
 							case 's':
 							{
+								finished = true;
+								substr_length++;
+
 								final_str += wxString::Format(
-									temp_format.c_str(),
-									static_cast<char *>(argv[i])
+									format_str.substr(start, substr_length).c_str(),
+									static_cast<char *>(var)
 								);
 
+								break;
+							}
+							// 
+							// long width
+							// 
+							case 'l':
+							{
+								substr_length++;
+								long_int = true;
+								break;
+							}
+							// 
+							// short int
+							// 
+							case 'h':
+							{
+								substr_length++;
+								short_int = true;
+								break;
+							}
+							// 
+							// long double
+							// 
+							case 'L':
+							{
+								substr_length++;
+								long_double = true;
+								break;
+							}
+							// 
+							// formatting that we can ignore
+							// 
+							case '+':
+							case '-':
+							case ' ':
+							case '#':
+							case '*':
+							case '.':
+							case '0':
+							case '1':
+							case '2':
+							case '3':
+							case '4':
+							case '5':
+							case '6':
+							case '7':
+							case '8':
+							case '9':
+							{
+								substr_length++;
 								break;
 							}
 							default:
 							{
-								final_str += wxString::Format(
-									temp_format.c_str(), 
-									argv[i]
-								);
-
 								break;
 							}
 						}
 
-						// + 2 to get past the % and the type identifier
-						start = substitution + 2;
+						if (finished)
+							break;
+						else
+							position++;
 					}
 
-					substitution = format_str.find('%', substitution + 2);
+					// 
+					// increment our argument counter
+					// 
+					i++;
 				}
+
+				// 
+				// start our search from the next character
+				// 
+				start = position + 1;
 			}
 				
 			// 
 			// if we have extra characters at the end of the string,
 			// append them now
 			// 
-			if (start < substitution)
+			if (start < format_str.size())
 				final_str += wxString::Format(format_str.substr(start).c_str());
 
 			std::printf(final_str.c_str());
