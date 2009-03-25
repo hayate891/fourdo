@@ -7,6 +7,10 @@
 
 #include <stdio.h>
 
+#ifdef GENRE_UNIX
+	#define _strdup strdup
+#endif
+
 FileSystem::FileSystem()
 {
 	imageName = NULL;
@@ -28,7 +32,7 @@ bool FileSystem::mount(const char *path)
 
 	if (!ret)
 	{
-		wxLogMessage("FileSystem::mount(): couldn't open iso located at %s", path);
+		wxLogMessage(_T("FileSystem::mount(): couldn't open iso located at %s"), path);
 		return false;
 	}
 
@@ -36,7 +40,7 @@ bool FileSystem::mount(const char *path)
 
 	if (!imageName)
 	{
-		wxLogMessage("FileSystem::mount(): could not allocate memory for a copy of the image name");
+		wxLogMessage(_T("FileSystem::mount(): could not allocate memory for a copy of the image name"));
 		return false;
 	}
 
@@ -57,7 +61,7 @@ bool FileSystem::readVolumeHeader(VolumeHeader *vh)
 
 	if (!ret)
 	{
-		wxLogMessage("FileSystem::readVolumeHeader: couldn't read volume header");
+		wxLogMessage(_T("FileSystem::readVolumeHeader: couldn't read volume header"));
 		return false;
 	}
 
@@ -101,7 +105,7 @@ bool FileSystem::readDirectoryHeader(DirectoryHeader *dh)
 
 	if (!ret)
 	{
-		wxLogMessage("FileSystem::readDirectoryHeader(): couldn't read directory header");
+		wxLogMessage(_T("FileSystem::readDirectoryHeader(): couldn't read directory header"));
 		return false;
 	}
 
@@ -127,7 +131,7 @@ bool FileSystem::readDirectoryEntry(DirectoryEntry *de)
 
 		if (!ret)
 		{
-			wxLogMessage("FileSystem::readDirectoryEntry(): couldn't read directory entry");
+			wxLogMessage(_T("FileSystem::readDirectoryEntry(): couldn't read directory entry"));
 			return false;
 		}
 
@@ -171,7 +175,7 @@ bool FileSystem::read(void *buf, const uint32_t bufLength, uint32_t *bytesRead)
 
 	if (!bufLength)
 	{
-		wxLogMessage("FileSystem::read(): bufLength size of %d is invalid", bufLength);
+		wxLogMessage(_T("FileSystem::read(): bufLength size of %d is invalid"), bufLength);
 		return false;
 	}
 
@@ -179,7 +183,7 @@ bool FileSystem::read(void *buf, const uint32_t bufLength, uint32_t *bytesRead)
 
 	if (ret == wxInvalidOffset)
 	{
-		wxLogMessage("FileSystem::read(): failed to read from filesystem: %d", ret);
+		wxLogMessage(_T("FileSystem::read(): failed to read from filesystem: %d"), ret);
 		return false;
 	}
 
@@ -196,7 +200,7 @@ bool FileSystem::seekToBlock(const uint32_t block, const bool relative)
 	if (!ret)
 	{
 		wxLogMessage(
-			"FileSystem::seekToBlock(): couldn't set file pointer position of %d", 
+			_T("FileSystem::seekToBlock(): couldn't set file pointer position of %d"), 
 			pos);
 		return false;
 	}
@@ -218,7 +222,7 @@ bool FileSystem::seekToByte(const uint32_t byte, const bool relative)
 	if (ret == wxInvalidOffset)
 	{
 		wxLogMessage(
-			"FileSystem::seekToBlock(): couldn't set file pointer position of %d", 
+			_T("FileSystem::seekToBlock(): couldn't set file pointer position of %d"), 
 			pos);
 		return false;
 	}
@@ -239,67 +243,67 @@ const char *FileSystem::getImageName()
 
 void FileSystem::printVolumeHeader(const VolumeHeader *vh)
 {
-	wxLogMessage("recordType       = %02x", vh->recordType);
-	wxLogMessage("syncBytes        = ");
+	wxLogMessage(_T("recordType       = %02x"), vh->recordType);
+	wxLogMessage(_T("syncBytes        = "));
 	for (int i = 0; i < 5; i++)
-		wxLogMessage("%02x", vh->syncBytes[i]);
-	wxLogMessage("");
-	wxLogMessage("recordVersion    = %02x", vh->recordVersion);
-	wxLogMessage("volumeFlags      = %02x", vh->flags);
-	wxLogMessage("volumeComment    = ");
+		wxLogMessage(_T("%02x"), vh->syncBytes[i]);
+	wxLogMessage(_T(""));
+	wxLogMessage(_T("recordVersion    = %02x"), vh->recordVersion);
+	wxLogMessage(_T("volumeFlags      = %02x"), vh->flags);
+	wxLogMessage(_T("volumeComment    = "));
 	for (int i = 0; i < 32; i++)
-		wxLogMessage("%c", vh->comment[i]);
-	wxLogMessage("");
-	wxLogMessage("volumeLabel      = ");
+		wxLogMessage(_T("%c"), vh->comment[i]);
+	wxLogMessage(_T(""));
+	wxLogMessage(_T("volumeLabel      = "));
 	for (int i = 0; i < 32; i++)
-		wxLogMessage("%c", vh->label[i]);
-	wxLogMessage("");
-	wxLogMessage("volumeId         = %08x", vh->id);
-	wxLogMessage("blockSize        = %08x (%d bytes)", vh->blockSize, vh->blockSize);
-	wxLogMessage("blockCount       = %08x (%d KB in volume)", vh->blockCount, (vh->blockCount * vh->blockSize) / 1024);
-	wxLogMessage("rootDirId        = %08x", vh->rootDirId);
-	wxLogMessage("rootDirBlocks    = %08x (%d blocks)", vh->rootDirBlocks, vh->rootDirBlocks);
-	wxLogMessage("rootDirBlockSize = %08x (%d bytes)", vh->rootDirBlockSize, vh->rootDirBlockSize);
-	wxLogMessage("lastRootDirCopy  = %08x", vh->lastRootDirCopy);
-	wxLogMessage("rootDirCopies    = ");
+		wxLogMessage(_T("%c"), vh->label[i]);
+	wxLogMessage(_T(""));
+	wxLogMessage(_T("volumeId         = %08x"), vh->id);
+	wxLogMessage(_T("blockSize        = %08x (%d bytes)"), vh->blockSize, vh->blockSize);
+	wxLogMessage(_T("blockCount       = %08x (%d KB in volume)"), vh->blockCount, (vh->blockCount * vh->blockSize) / 1024);
+	wxLogMessage(_T("rootDirId        = %08x"), vh->rootDirId);
+	wxLogMessage(_T("rootDirBlocks    = %08x (%d blocks)"), vh->rootDirBlocks, vh->rootDirBlocks);
+	wxLogMessage(_T("rootDirBlockSize = %08x (%d bytes)"), vh->rootDirBlockSize, vh->rootDirBlockSize);
+	wxLogMessage(_T("lastRootDirCopy  = %08x"), vh->lastRootDirCopy);
+	wxLogMessage(_T("rootDirCopies    = "));
 	for (int i = 0; i < 8; i++)
 	{
-		wxLogMessage("%08x", vh->rootDirCopies[i]);
+		wxLogMessage(_T("%08x"), vh->rootDirCopies[i]);
 
 		if (i + 1 < 8)
-			wxLogMessage(" ");
+			wxLogMessage(_T(" "));
 	}
-	wxLogMessage("");
+	wxLogMessage(_T(""));
 }
 
 void FileSystem::printDirectoryHeader(const DirectoryHeader *dh)
 {
-	wxLogMessage("nextBlock       = %08x", dh->nextBlock);
-	wxLogMessage("prevBlock       = %08x", dh->prevBlock);
-	wxLogMessage("flags           = %08x", dh->flags);
-	wxLogMessage("unusedOffset    = %08x", dh->unusedOffset);
-	wxLogMessage("directoryOffset = %08x", dh->directoryOffset);
+	wxLogMessage(_T("nextBlock       = %08x"), dh->nextBlock);
+	wxLogMessage(_T("prevBlock       = %08x"), dh->prevBlock);
+	wxLogMessage(_T("flags           = %08x"), dh->flags);
+	wxLogMessage(_T("unusedOffset    = %08x"), dh->unusedOffset);
+	wxLogMessage(_T("directoryOffset = %08x"), dh->directoryOffset);
 }
 
 void FileSystem::printDirectoryEntry(const DirectoryEntry *de)
 {
-	wxLogMessage("flags             = %08x", de->flags);
-	wxLogMessage("id                = %08x", de->id);
-	wxLogMessage("ext               = ");
+	wxLogMessage(_T("flags             = %08x"), de->flags);
+	wxLogMessage(_T("id                = %08x"), de->id);
+	wxLogMessage(_T("ext               = "));
 	for (int i = 0; i < 4; i++)
-		wxLogMessage("%c", de->ext[i]);
-	wxLogMessage("");
-	wxLogMessage("blockSize         = %08x", de->blockSize);
-	wxLogMessage("entryLengthBytes  = %08x", de->entryLengthBytes);
-	wxLogMessage("entryLengthBlocks = %08x", de->entryLengthBlocks);
-	wxLogMessage("burst             = %08x", de->burst);
-	wxLogMessage("gap               = %08x", de->gap);
-	wxLogMessage("fileName          = ");
+		wxLogMessage(_T("%c"), de->ext[i]);
+	wxLogMessage(_T(""));
+	wxLogMessage(_T("blockSize         = %08x"), de->blockSize);
+	wxLogMessage(_T("entryLengthBytes  = %08x"), de->entryLengthBytes);
+	wxLogMessage(_T("entryLengthBlocks = %08x"), de->entryLengthBlocks);
+	wxLogMessage(_T("burst             = %08x"), de->burst);
+	wxLogMessage(_T("gap               = %08x"), de->gap);
+	wxLogMessage(_T("fileName          = "));
 	for (int i = 0; i < 32; i++)
-		wxLogMessage("%c", de->fileName[i]);
-	wxLogMessage("");
-	wxLogMessage("lastCopy          = %08x", de->lastCopy);
-	wxLogMessage("copies            = %08x", de->copies);
+		wxLogMessage(_T("%c"), de->fileName[i]);
+	wxLogMessage(_T(""));
+	wxLogMessage(_T("lastCopy          = %08x"), de->lastCopy);
+	wxLogMessage(_T("copies            = %08x"), de->copies);
 }
 
 void FileSystem::printString(const char *str)
@@ -317,12 +321,12 @@ void FileSystem::printString(const uint8_t *str, const uint32_t strLength)
 		// a line feed before every carriage return
 		// 
 		if (str[i] == 0x0D)
-			wxLogMessage("");
+			wxLogMessage(_T(""));
 
-		wxLogMessage("%c", str[i]);
+		wxLogMessage(_T("%c"), str[i]);
 	}
 
-	wxLogMessage("");
+	wxLogMessage(_T(""));
 }
 
 void FileSystem::endianSwap(uint16_t &x)

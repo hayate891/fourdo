@@ -44,9 +44,9 @@ Directory::~Directory()
 bool Directory::openDirectory(const char *path)
 {
 	bool              ret;
-	char              separator[] = "/";
+	wxString          separator(_T("/"));
 	wxString          token;
-	wxStringTokenizer tokenizer(path, separator);
+	wxStringTokenizer tokenizer(reinterpret_cast<const wxChar *>(path), separator);
 	VolumeHeader      volumeHeader;
 	DirectoryEntry    dirEntry, *newEntry, *oldEntry;
 
@@ -55,7 +55,7 @@ bool Directory::openDirectory(const char *path)
 	// 
 	if (strlen(path) <= 0)
 	{
-		wxLogMessage("openDirectory(): path is empty");
+		wxLogMessage(_T("openDirectory(): path is empty"));
 		return false;
 	}
 
@@ -64,7 +64,7 @@ bool Directory::openDirectory(const char *path)
 	// 
 	if (path[0] != '/')
 	{
-		wxLogMessage("openDirectory(): path is not absolute, openDirectory only takes absolute paths");
+		wxLogMessage(_T("openDirectory(): path is not absolute, openDirectory only takes absolute paths"));
 		return false;
 	}
 
@@ -73,7 +73,7 @@ bool Directory::openDirectory(const char *path)
 	// 
 	if (!tokenizer.HasMoreTokens())
 	{
-		wxLogMessage("openDirectory(): couldn't find any /'s in the path");
+		wxLogMessage(_T("openDirectory(): couldn't find any /'s in the path"));
 		return false;
 	}
 
@@ -84,7 +84,7 @@ bool Directory::openDirectory(const char *path)
 
 	if (!ret)
 	{
-		wxLogMessage("openDirectory(): could not seek to the beginning of the filesystem");
+		wxLogMessage(_T("openDirectory(): could not seek to the beginning of the filesystem"));
 		return false;
 	}
 
@@ -102,7 +102,7 @@ bool Directory::openDirectory(const char *path)
 
 	if (!ret)
 	{
-		wxLogMessage("openDirectory(): could not read volume header from the filesystem");
+		wxLogMessage(_T("openDirectory(): could not read volume header from the filesystem"));
 		return false;
 	}
 
@@ -113,7 +113,7 @@ bool Directory::openDirectory(const char *path)
 
 	if (!ret)
 	{
-		wxLogMessage("openDirectory(): could not read directory header from the filesystem");
+		wxLogMessage(_T("openDirectory(): could not read directory header from the filesystem"));
 		return false;
 	}
 
@@ -134,7 +134,7 @@ bool Directory::openDirectory(const char *path)
 	// 
 	// our current path
 	// 
-	this->path = "/";
+	this->path = _T("/");
 
 	while (tokenizer.HasMoreTokens())
 	{
@@ -143,13 +143,13 @@ bool Directory::openDirectory(const char *path)
 		if (token.IsEmpty())
 			continue;
 
-		ret = findInCurrentDirectory(token.c_str(), &dirEntry);
+		ret = findInCurrentDirectory(reinterpret_cast<const char *>(token.c_str()), &dirEntry);
 
 		if (!ret)
 		{
 			wxLogMessage(
-				"openDirectory(): findInCurrentDirectory failed for path element %s",
-				token);
+				_T("openDirectory(): findInCurrentDirectory failed for path element %s"),
+				token.c_str());
 			break;
 		}
 	}
@@ -169,7 +169,7 @@ bool Directory::closeDirectory()
 bool Directory::changeDirectory(const char *path)
 {
 	DirectoryEntry dirEntry;
-	wxString       pathString(path), token;
+	wxString       pathString(reinterpret_cast<const wxChar *>(path)), token;
 	bool           ret;
 
 	if (pathString.IsEmpty())
@@ -179,9 +179,9 @@ bool Directory::changeDirectory(const char *path)
 	// if our path start with /, then it's an absolute
 	// path and we'll just call openDirectory
 	// 
-	if (pathString.StartsWith("/"))
+	if (pathString.StartsWith(_T("/")))
 	{
-		wxLogMessage("changeDirectory(): path starts with '/'. calling openDirectory");
+		wxLogMessage(_T("changeDirectory(): path starts with '/'. calling openDirectory"));
 		return openDirectory(path);
 	}
 
@@ -189,11 +189,11 @@ bool Directory::changeDirectory(const char *path)
 	{
 		token = pathString.BeforeFirst('/');
 
-		ret = findInCurrentDirectory(token.c_str(), &dirEntry);
+		ret = findInCurrentDirectory(reinterpret_cast<const char *>(token.c_str()), &dirEntry);
 
 		if (!ret)
 		{
-			wxLogMessage("changeDirectory(): findInCurrentDirectory failed for token %s", token);
+			wxLogMessage(_T("changeDirectory(): findInCurrentDirectory failed for token %s"), token.c_str());
 			return false;
 		}
 
@@ -205,7 +205,7 @@ bool Directory::changeDirectory(const char *path)
 
 const char *Directory::getPath()
 {
-	return path.c_str();
+	return reinterpret_cast<const char *>(path.c_str());
 }
 
 bool Directory::enumerateDirectory(DirectoryEntry *de)
@@ -218,7 +218,7 @@ bool Directory::enumerateDirectory(DirectoryEntry *de)
 	// 
 	if (endOfDir)
 	{
-		wxLogMessage("enumerateDirectory(): no more directories left to enumerate.");
+		wxLogMessage(_T("enumerateDirectory(): no more directories left to enumerate."));
 		return false;
 	}
 
@@ -226,13 +226,13 @@ bool Directory::enumerateDirectory(DirectoryEntry *de)
 
 	if (!ret)
 	{
-		wxLogMessage("enumerateDirectory(): readDirectoryEntry failed.");
+		wxLogMessage(_T("enumerateDirectory(): readDirectoryEntry failed."));
 		return false;
 	}
 	else if ((de->flags & DirectoryEntryPosMask) == DirectoryEntryPosLastInBlock)
 	{
 		wxLogMessage(
-			"enumerateDirectory(): found last entry in block, block size is %d, unused offset is %d",
+			_T("enumerateDirectory(): found last entry in block, block size is %d, unused offset is %d"),
 			fileSystem.getBlockSize(),
 			directoryHeader.unusedOffset);
 
@@ -245,7 +245,7 @@ bool Directory::enumerateDirectory(DirectoryEntry *de)
 
 		if (!ret)
 		{
-			wxLogMessage("enumerateDirectory(): failed to seek to beginning of new directory header");
+			wxLogMessage(_T("enumerateDirectory(): failed to seek to beginning of new directory header"));
 			return false;
 		}
 
@@ -253,7 +253,7 @@ bool Directory::enumerateDirectory(DirectoryEntry *de)
 
 		if (!ret)
 		{
-			wxLogMessage("enumerateDirectory(): failed to read the next directory header");
+			wxLogMessage(_T("enumerateDirectory(): failed to read the next directory header"));
 			return false;
 		}
 
@@ -261,7 +261,7 @@ bool Directory::enumerateDirectory(DirectoryEntry *de)
 	}
 	else if ((de->flags & DirectoryEntryPosMask) == DirectoryEntryPosLastInDir)
 	{
-		wxLogMessage("enumerateDirectory(): found last directory entry in the directory.");
+		wxLogMessage(_T("enumerateDirectory(): found last directory entry in the directory."));
 		endOfDir = true;
 	}
 
@@ -278,7 +278,7 @@ bool Directory::findInCurrentDirectory(const char *item, DirectoryEntry *dirEntr
 	// 
 	if (dirTree.empty())
 	{
-		wxLogMessage("findInCurrentDirectory(): find anything without an open directory");
+		wxLogMessage(_T("findInCurrentDirectory(): find anything without an open directory"));
 		return false;
 	}
 
@@ -297,7 +297,7 @@ bool Directory::findInCurrentDirectory(const char *item, DirectoryEntry *dirEntr
 
 		if (!ret)
 		{
-			wxLogMessage("changeDirectory(): couldn't seek to directory %s", (char *)newEntry->fileName);
+			wxLogMessage(_T("changeDirectory(): couldn't seek to directory %s"), (char *)newEntry->fileName);
 			dirTree.push_front(currentEntry);
 			return false;
 		}
@@ -306,7 +306,7 @@ bool Directory::findInCurrentDirectory(const char *item, DirectoryEntry *dirEntr
 
 		if (!ret)
 		{
-			wxLogMessage("changeDirectory: found directory %s but failed to read it's header", (char *)newEntry->fileName);
+			wxLogMessage(_T("changeDirectory: found directory %s but failed to read it's header"), (char *)newEntry->fileName);
 			dirTree.push_front(currentEntry);
 			return false;
 		}
@@ -334,7 +334,7 @@ bool Directory::findInCurrentDirectory(const char *item, DirectoryEntry *dirEntr
 	if (!ret)
 	{
 		wxLogMessage(
-			"findInCurrentDirectory(): couldn't move to beginning of directory %s", 
+			_T("findInCurrentDirectory(): couldn't move to beginning of directory %s"), 
 			(char *)currentEntry->fileName);
 		return false;
 	}
@@ -344,7 +344,7 @@ bool Directory::findInCurrentDirectory(const char *item, DirectoryEntry *dirEntr
 	if (!ret)
 	{
 		wxLogMessage(
-			"findInCurrentDirectory(): couldn't read directory header for %s",
+			_T("findInCurrentDirectory(): couldn't read directory header for %s"),
 			(char *)currentEntry->fileName);
 		return false;
 	}
@@ -364,7 +364,7 @@ bool Directory::findInCurrentDirectory(const char *item, DirectoryEntry *dirEntr
 
 			if (!ret)
 			{
-				wxLogMessage("changeDirectory(): couldn't seek to directory %s", item);
+				wxLogMessage(_T("changeDirectory(): couldn't seek to directory %s"), item);
 				break;
 			}
 
@@ -372,7 +372,7 @@ bool Directory::findInCurrentDirectory(const char *item, DirectoryEntry *dirEntr
 
 			if (!ret)
 			{
-				wxLogMessage("changeDirectory: found directory %s but failed to read it's header", item);
+				wxLogMessage(_T("changeDirectory: found directory %s but failed to read it's header"), item);
 				break;
 			}
 
@@ -383,8 +383,8 @@ bool Directory::findInCurrentDirectory(const char *item, DirectoryEntry *dirEntr
 			dirTree.push_front(newEntry);
 
 			// update our current path
-			path.Append(item);
-			path.Append("/");
+			path.Append(reinterpret_cast<const wxChar *>(item));
+			path.Append(_T("/"));
 
 			found = true;
 			break;

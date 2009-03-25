@@ -3,6 +3,10 @@
 
 #include <stdio.h>
 
+#ifdef GENRE_UNIX
+	#define _strdup strdup
+#endif
+
 File::File(const char *rom)
 {
 	VolumeHeader vh;
@@ -43,7 +47,7 @@ bool File::openFile(const char *path)
 
 	if (!filePath)
 	{
-		wxLogMessage("openFile(): _strdup failed to allocate memory");
+		wxLogMessage(_T("openFile(): _strdup failed to allocate memory"));
 		return false;
 	}
 
@@ -58,7 +62,7 @@ bool File::openFile(const char *path)
 		// TODO: file in / and relative paths
 		if (!fileNameStart || !strlen(fileNameStart))
 		{
-			wxLogMessage("openFile(): didn't find any /'s in the path or no filename in the path");
+			wxLogMessage(_T("openFile(): didn't find any /'s in the path or no filename in the path"));
 			ret = false;
 			break;
 		}
@@ -68,7 +72,7 @@ bool File::openFile(const char *path)
 
 		if (!fileName)
 		{
-			wxLogMessage("openFile(): _strdup failed to allocate memory");
+			wxLogMessage(_T("openFile(): _strdup failed to allocate memory"));
 			ret = false;
 			break;
 		}
@@ -87,7 +91,7 @@ bool File::openFile(const char *path)
 
 		if (!ret)
 		{
-			wxLogMessage("openFile(): openDirectory failed");
+			wxLogMessage(_T("openFile(): openDirectory failed"));
 			break;
 		}
 
@@ -107,7 +111,7 @@ bool File::openFile(const char *path)
 
 				if (!ret)
 				{
-					wxLogMessage("openFile(): could not seek to block %08x to open file", dirEntry.copies);
+					wxLogMessage(_T("openFile(): could not seek to block %08x to open file"), dirEntry.copies);
 					break;
 				}
 
@@ -139,7 +143,7 @@ bool File::read(uint8_t *buf, const uint32_t bufLength, uint32_t *bytesRead)
 
 	if (endOfFile)
 	{
-		wxLogMessage("read(): end of file");
+		wxLogMessage(_T("read(): end of file"));
 		return false;
 	}
 
@@ -156,7 +160,7 @@ bool File::readLine(uint8_t *buf, const uint32_t bufLength, uint32_t *bytesRead)
 {
 	if (endOfFile)
 	{
-		wxLogMessage("read(): end of file");
+		wxLogMessage(_T("read(): end of file"));
 		return false;
 	}
 
