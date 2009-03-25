@@ -11,10 +11,12 @@
 
 #include "wx/file.h"
 
+#ifndef GENRE_UNIX
 typedef unsigned char  uint8_t;
 typedef unsigned short uint16_t;
 typedef unsigned int   uint32_t;
 typedef __int32        int32_t;
+#endif
 
 // 
 // filesystem object sizes
