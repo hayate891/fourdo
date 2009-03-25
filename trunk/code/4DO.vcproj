@@ -254,34 +254,6 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Console"
-			>
-			<File
-				RelativePath=".\Console.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Console.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DMAController.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DMAController.h"
-				>
-			</File>
-			<File
-				RelativePath=".\KernelFaker.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\KernelFaker.h"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name="Global"
 			>
 			<File
@@ -342,28 +314,80 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="ARMCPU"
+			Name="Emulation"
 			>
-			<File
-				RelativePath=".\ARMCPU.cpp"
+			<Filter
+				Name="Core"
 				>
-			</File>
-			<File
-				RelativePath=".\ARMCPU.h"
+				<File
+					RelativePath=".\ARMCPU.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ARMCPU.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ARMRegisters.h"
+					>
+				</File>
+				<File
+					RelativePath=".\SWIHandler.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\SWIHandler.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Console"
 				>
-			</File>
-			<File
-				RelativePath=".\ARMRegisters.h"
+				<File
+					RelativePath=".\Console.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Console.h"
+					>
+				</File>
+				<File
+					RelativePath=".\DMAController.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\DMAController.h"
+					>
+				</File>
+				<File
+					RelativePath=".\KernelFaker.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\KernelFaker.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="SWI"
 				>
-			</File>
-			<File
-				RelativePath=".\SWIHandler.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SWIHandler.h"
-				>
-			</File>
+				<File
+					RelativePath=".\SWI_ARM.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\SWI_ARM.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\SWI_Meta.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\SWI_Meta.hpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>
