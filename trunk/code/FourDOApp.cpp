@@ -7,10 +7,12 @@ IMPLEMENT_APP(FourDOApp)
 // Application startup
 /////////////////////////////////////////////////////////////////////////
 
-//int main()
-//{
-	//return WinMain(::GetModuleHandle(NULL), NULL, ::GetCommandLine(), SW_SHOWNORMAL);
-//}
+#ifndef GENRE_UNIX
+int main()
+{
+	return WinMain(::GetModuleHandle(NULL), NULL, ::GetCommandLine(), SW_SHOWNORMAL);
+}
+#endif
 
 bool FourDOApp::OnInit()
 {
