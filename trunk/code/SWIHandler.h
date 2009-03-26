@@ -21,6 +21,23 @@ namespace fourdo { namespace swi
 	extern std::map<uint32, swiHandler> swiToHandlerMap;
 
 	// extern void Debug(void);
+	
+	// 
+	// ARM Interrupts
+	// 
+	void SWI_ARM_GetMemoryBaseAddress(ARMRegisters *registers, DMAController *dma);
+	void SWI_ARM_HaltExecution(ARMRegisters *registers, DMAController *dma);
+	
+	// 
+	// Meta Interrupts
+	//
+	// JMK:
+	// These are 4DO-only interrupts. I found that some 3DO code was manually 
+	// setting up the LR and PC. It sets the PC to values out of a large table.
+	// FourDO has replaced this table so that these manual kernel calls become
+	// SWI's.
+	// 
+	void SWI_META_ImageEntryPoint(ARMRegisters *registers, DMAController *dma);
 
 	// 
 	// kernel software interrupts

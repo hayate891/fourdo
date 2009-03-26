@@ -3,7 +3,11 @@
 #include <wx/string.h>
 
 #include "BitMath.h"
+#include "KernelFaker.h"
 #include "SWIHandler.h"
+
+#include "SWI_ARM.hpp"
+#include "SWI_Meta.hpp"
 
 namespace fourdo { namespace swi
 {
@@ -305,11 +309,37 @@ namespace fourdo { namespace swi
 	{
 		std::map<uint32, swiHandler> map;
 
+		map.insert(std::pair<uint32, swiHandler>(0x00010, &fourdo::swi::SWI_ARM_GetMemoryBaseAddress));
+		map.insert(std::pair<uint32, swiHandler>(0x00011, &fourdo::swi::SWI_ARM_HaltExecution));
+		
+		map.insert(std::pair<uint32, swiHandler>(SWI_NUM_IMAGE_ENTRY_POINT, &fourdo::swi::SWI_META_ImageEntryPoint));
+		
 		map.insert(std::pair<uint32, swiHandler>(0x1000e, &fourdo::swi::prepare_printf));
 
 		return map;
 	}
 
 	std::map<uint32, swiHandler> swiToHandlerMap = initSwiMap();
+	
+	///////////////////////////////////////////////////////////////
+	// ARM Interrupts
+	// 
+	void SWI_ARM_GetMemoryBaseAddress(ARMRegisters *registers, DMAController *dma)
+	{
+		registers->USER[0] = ARM_GetMemoryBaseAddress();
+	}
+	
+	void SWI_ARM_HaltExecution(ARMRegisters *registers, DMAController *dma)
+	{
+		ARM_HaltExecution();
+	}
+
+	///////////////////////////////////////////////////////////////
+	// Meta Interrupts
+	//
+	void SWI_META_ImageEntryPoint(ARMRegisters *registers, DMAController *dma)
+	{
+		META_ImageEntryPoint();
+	}
 }
 }
