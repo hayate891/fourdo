@@ -1,6 +1,11 @@
 #include "ARMCPU.h"
 #include "SWIHandler.h"
-#include <string>
+
+#ifdef GENRE_UNIX
+	#include <string.h>
+#else
+	#include <string>
+#endif
 
 // ARM Instruction masks
 #define ARM_MUL_MASK    0x0fc000f0
@@ -140,7 +145,7 @@ void __fastcall ARMCPU::SetFIQ( void )
 gFIQ=true;
 }
 
-unsigned int __fastcall ARMCPU::GetFIQ()
+unsigned int ARMCPU::GetFIQ()
 {
 return gFIQ;
 }
@@ -183,11 +188,22 @@ gSecondROM=0;
 
 unsigned int __fastcall ARMCPU::calcbits(unsigned int num)
 {
-  __asm{         //calc bits - code is not portable!!!!!!!!!!!! x86 only!!!!!!!
-        mov     eax,num
-        bsr     eax,eax
-        mov		num,eax
- }
+#ifdef GENRE_UNIX
+	asm(
+		"movl %1, %%eax;"
+		"bsr %%eax, %%eax;"
+		"mov %%eax, %0;"
+		: "=r" (num)
+		: "r" (num)
+		: "%eax"
+	);
+#else
+	__asm{         //calc bits - code is not portable!!!!!!!!!!!! x86 only!!!!!!!
+		mov     eax,num
+		bsr     eax,eax
+		mov	num,eax
+	 }
+#endif
  return num;
 }
 

@@ -4,7 +4,7 @@
 #include "wx/wx.h"
 #include "wx/image.h"
 
-#include "filesystem\file.h"
+#include "filesystem/file.h"
 
 class ImageViewer : public wxFrame
 {

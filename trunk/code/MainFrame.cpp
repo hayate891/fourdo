@@ -56,7 +56,7 @@ MainFrame::MainFrame( wxCmdLineParser* parser )
 
 	/////////////////////
 	// GUI Setup.
-	this->SetTitle( "4DO" );
+	this->SetTitle( _T("4DO") );
 	this->SetIcon( wxIcon( fourdo_xpm ) );
 	this->SetSize( 648, 546 );
 	this->CenterOnScreen();
@@ -86,14 +86,14 @@ MainFrame::MainFrame( wxCmdLineParser* parser )
 
 	/////////////////////
 	// Handle command-line arguments.
-	if( parser->Found( "li" ) )
+	if( parser->Found( _T("li") ) )
 	{
-		parser->Found( "li", &fileName );
+		parser->Found( _T("li"), &fileName );
 		m_con->loadIso( fileName );
 	}
-	else if( parser->Found( "lc" ) )
+	else if( parser->Found( _T("lc") ) )
 	{
-		parser->Found( "lc", &fileName );
+		parser->Found( _T("lc"), &fileName );
 		m_con->loadBinary( fileName );
 	}
 }
@@ -123,7 +123,7 @@ void MainFrame::RunCycles()
 		sw.Pause();
 		
 		// Display total time metric
-		this->SetStatusText( wxString::Format( "Time: %ldms     Cycles:%u", sw.Time(), cycles ), SB_INFO );
+		this->SetStatusText( wxString::Format( _T("Time: %ldms     Cycles:%u"), sw.Time(), cycles ), SB_INFO );
 	}
 	else
 	{

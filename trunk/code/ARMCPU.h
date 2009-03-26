@@ -19,6 +19,10 @@
 #include "ARMRegisters.h"
 #include "DMAController.h"
 
+#ifdef GENRE_UNIX
+	#define __fastcall __attribute__((fastcall)) 
+#endif
+
 class ARMCPU
 {
 public:
@@ -28,7 +32,7 @@ public:
 	DMAController*  DMA;
 	ARMRegisters    ARM;
 
-	unsigned int __fastcall GetFIQ();
+	unsigned int GetFIQ();
 	void __fastcall SetFIQ( void );
 	void SetPC( unsigned int addr );
 
