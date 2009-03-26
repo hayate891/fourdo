@@ -1,7 +1,7 @@
 #include "Console.h"
 
 #include "KernelFaker.h"
-#include "filesystem\file.h"
+#include "filesystem/file.h"
 
 #define  ROM_LOAD_ADDRESS  0x00100000
 
@@ -49,7 +49,7 @@ bool Console::loadIso( wxString fileName )
 	///////////////////////////////////////////////////
 	// Open the Launchme of this CD image
 	uint32  bytesRead;
-	File f( fileName );
+	File f( reinterpret_cast<const char *>(fileName.c_str()) );
 
 	if( !f.openFile( "/launchme" ) )
 		return false;

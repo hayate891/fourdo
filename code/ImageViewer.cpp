@@ -36,17 +36,17 @@ ImageViewer::ImageViewer(wxFrame* parent, wxString isoPath, wxString filePath)
 	uint8_t        header[headerLength];
 	bool           ret;
 
-	this->SetTitle (wxString().Format ("BMP test - %s", isoPath));
+	this->SetTitle (wxString().Format (_T("BMP test - %s"), isoPath));
 
 	/////////////////////////
    
-	File f(isoPath);
+	File f(reinterpret_cast<const char *>(isoPath.c_str()));
 
-	ret = f.openFile(filePath.c_str());
+	ret = f.openFile(reinterpret_cast<const char *>(filePath.c_str()));
 
 	if (!ret)
 	{
-		wxMessageBox(wxString::Format("Couldn't open %s for display", filePath));
+		wxMessageBox(wxString::Format(_T("Couldn't open %s for display"), filePath.c_str()));
 		return;
 	}
 

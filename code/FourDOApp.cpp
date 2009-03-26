@@ -7,10 +7,10 @@ IMPLEMENT_APP(FourDOApp)
 // Application startup
 /////////////////////////////////////////////////////////////////////////
 
-int main()
-{
-	return WinMain(::GetModuleHandle(NULL), NULL, ::GetCommandLine(), SW_SHOWNORMAL);
-}
+//int main()
+//{
+	//return WinMain(::GetModuleHandle(NULL), NULL, ::GetCommandLine(), SW_SHOWNORMAL);
+//}
 
 bool FourDOApp::OnInit()
 {
@@ -26,16 +26,16 @@ bool FourDOApp::OnInit()
    wxString  logo;
    wxCmdLineParser parser( this->argc, this->argv );
    
-   parser.SetSwitchChars( "-/" );
+   parser.SetSwitchChars( _T("-/") );
 
-   logo.Append( "============================================================\r\n" );
-   logo.Append( "FourDO - An open-source HLE 3DO Emulator\r\n" );
-   logo.Append( "============================================================\r\n" );
-   parser.AddSwitch( "?",  "",          "Displays usage information",		wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_OPTION_HELP );
-   parser.AddSwitch( "h",  "help",      "Displays usage information",		wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_OPTION_HELP );
-   parser.AddSwitch( "d",  "debug",     "Enables debug mode",				wxCMD_LINE_PARAM_OPTIONAL );
-   parser.AddOption( "li", "loadimage", "Loads a CD image file",			wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL );
-   parser.AddOption( "lc", "loadcode",  "Loads a file as ARM60 code",		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL );
+   logo.Append( _T("============================================================\r\n") );
+   logo.Append( _T("FourDO - An open-source HLE 3DO Emulator\r\n") );
+   logo.Append( _T("============================================================\r\n") );
+   parser.AddSwitch( _T("?"),  _T(""),          _T("Displays usage information"),		wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_OPTION_HELP );
+   parser.AddSwitch( _T("h"),  _T("help"),      _T("Displays usage information"),		wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_OPTION_HELP );
+   parser.AddSwitch( _T("d"),  _T("debug"),     _T("Enables debug mode"),				wxCMD_LINE_PARAM_OPTIONAL );
+   parser.AddOption( _T("li"), _T("loadimage"), _T("Loads a CD image file"),			wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL );
+   parser.AddOption( _T("lc"), _T("loadcode"),  _T("Loads a file as ARM60 code"),		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL );
    parser.SetLogo( logo );
    parser.EnableLongOptions();
 
@@ -43,7 +43,7 @@ bool FourDOApp::OnInit()
    // logger
    // 
    wxLog::SetActiveTarget( new wxLogStderr( fopen( "fourdo.log", "a" ) ) );
-   wxLogMessage( "=====================================================" );
+   wxLogMessage( _T("=====================================================") );
 
    if( parser.Parse() == 0 )
    {

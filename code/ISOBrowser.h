@@ -8,7 +8,7 @@
 
 #include "folder.xpm"
 #include "file.xpm"
-#include "filesystem\file.h"
+#include "filesystem/file.h"
 
 class ISOBrowser : public wxFrame
 {

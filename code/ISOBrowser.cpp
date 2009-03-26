@@ -46,7 +46,7 @@ ISOBrowser::ISOBrowser(wxFrame* parent, wxString fileName)
       : wxFrame (parent, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize)
 {
    this->SetIcon(folder_xpm);
-   this->SetTitle (wxString().Format ("ISO Browser - %s", fileName));
+   this->SetTitle (wxString::Format(_T("ISO Browser - %s"), fileName.c_str()));
    
    /////////////////////////
    
@@ -55,7 +55,7 @@ ISOBrowser::ISOBrowser(wxFrame* parent, wxString fileName)
    // 
    // start out at the root directory
    // 
-   m_dir = new Directory(m_fileName);
+   m_dir = new Directory(reinterpret_cast<const char *>(m_fileName.c_str()));
    m_dir->openDirectory("/");
 
    imlIcons = new wxImageList (16, 16);
@@ -64,7 +64,7 @@ ISOBrowser::ISOBrowser(wxFrame* parent, wxString fileName)
    
    tvwMain = new wxTreeCtrl (this, ID_TREE_VIEW);
    tvwMain->SetImageList (imlIcons);
-   m_currentTreeRoot = tvwMain->AddRoot (_T(m_dir->getPath()), 0);
+   m_currentTreeRoot = tvwMain->AddRoot (reinterpret_cast<const wxChar *>(m_dir->getPath()), 0);
 
    lvwMain = new wxListView (this, ID_LIST_VIEW);
    lvwMain->SetImageList (imlIcons, wxIMAGE_LIST_SMALL);
@@ -128,7 +128,7 @@ void ISOBrowser::onListActivated(wxListEvent &event)
 	}
 	else if (eventData == 0)
 	{
-		m_dir->changeDirectory(m_focusedFile.c_str());
+		m_dir->changeDirectory(reinterpret_cast<const char *>(m_focusedFile.c_str()));
 
 		// 
 		// set our new tree root and select it
@@ -146,12 +146,12 @@ void ISOBrowser::onListActivated(wxListEvent &event)
 		// NOTE: Some images are actually ".cel" or have no extension at all
 		//       so I'll allow them to just attempt to view antyhing.
 		ImageViewer* imageViewer;
-		imageViewer = new ImageViewer(this, m_fileName, wxString::Format("%s%s", m_dir->getPath(), m_focusedFile));
+		imageViewer = new ImageViewer(this, m_fileName, wxString::Format(_T("%s%s"), m_dir->getPath(), m_focusedFile.c_str()));
 		imageViewer->Show();		
 	}
 	else
 	{
-		wxMessageBox(wxString::Format("don't know what to do with file type %d", eventData));
+		wxMessageBox(wxString::Format(_T("don't know what to do with file type %d"), eventData));
 		return;
 	}
 }
@@ -176,9 +176,9 @@ void ISOBrowser::onListRightClick(wxListEvent &event)
 	{
 		wxMenu menu;
 
-		menu.Append(ID_MENU_OPEN_IMAGE, "Open as &image");
-		menu.Append(ID_MENU_OPEN_CODE, "Open as &code");
-		menu.Append(ID_MENU_OPEN_TEXT, "Open as &text");
+		menu.Append(ID_MENU_OPEN_IMAGE, _T("Open as &image"));
+		menu.Append(ID_MENU_OPEN_CODE, _T("Open as &code"));
+		menu.Append(ID_MENU_OPEN_TEXT, _T("Open as &text"));
 
 		PopupMenu(&menu);
 	}
@@ -189,13 +189,13 @@ void ISOBrowser::onPopupMenuOpenImage(wxCommandEvent &)
 	// NOTE: Some images are actually ".cel" or have no extension at all
 	//       so I'll allow them to just attempt to view antyhing.
 	ImageViewer* imageViewer;
-	imageViewer = new ImageViewer(this, m_fileName, wxString::Format("%s%s", m_dir->getPath(), m_focusedFile));
+	imageViewer = new ImageViewer(this, m_fileName, wxString::Format(_T("%s%s"), m_dir->getPath(), m_focusedFile.c_str()));
 	imageViewer->Show();		
 }
 
 void ISOBrowser::onPopupMenuOpenText(wxCommandEvent &)
 {
-	wxMessageBox("show text");
+	wxMessageBox(_T("show text"));
 }
 
 void ISOBrowser::paintCurrentDirContents()
@@ -217,15 +217,15 @@ void ISOBrowser::paintCurrentDirContents()
 	if (strcmp(m_dir->getPath(), "/") != 0)
 	{
 		newItem = lvwMain->InsertItem (lvwMain->GetItemCount (), _T(".."), IMAGE_ID_FOLDER);
-		lvwMain->SetItem (newItem, 1, wxString::Format ("%d", 0));
-		lvwMain->SetItem (newItem, 2, wxString::Format ("%d", 0));
-		lvwMain->SetItem (newItem, 3, wxString::Format ("%d", 0));
-		lvwMain->SetItem (newItem, 4, wxString::Format ("%d", 0));
-		lvwMain->SetItem (newItem, 5, wxString (""));
-		lvwMain->SetItem (newItem, 6, wxString::Format ("%d", 0));
-		lvwMain->SetItem (newItem, 7, wxString::Format ("%d", 0));
-		lvwMain->SetItem (newItem, 8, wxString::Format ("%d", 0));
-		lvwMain->SetItem (newItem, 9, wxString::Format ("%d", 0));
+		lvwMain->SetItem (newItem, 1, wxString::Format (_T("%d"), 0));
+		lvwMain->SetItem (newItem, 2, wxString::Format (_T("%d"), 0));
+		lvwMain->SetItem (newItem, 3, wxString::Format (_T("%d"), 0));
+		lvwMain->SetItem (newItem, 4, wxString::Format (_T("%d"), 0));
+		lvwMain->SetItem (newItem, 5, _T(""));
+		lvwMain->SetItem (newItem, 6, wxString::Format (_T("%d"), 0));
+		lvwMain->SetItem (newItem, 7, wxString::Format (_T("%d"), 0));
+		lvwMain->SetItem (newItem, 8, wxString::Format (_T("%d"), 0));
+		lvwMain->SetItem (newItem, 9, wxString::Format (_T("%d"), 0));
 
 		// data to sort by later. this one gets a lower value so 
 		// it will sort to the top
@@ -238,7 +238,7 @@ void ISOBrowser::paintCurrentDirContents()
 		{
 			// Folder.
 			image = IMAGE_ID_FOLDER;
-			tvwMain->AppendItem (m_currentTreeRoot, wxString (de.fileName), image);
+			tvwMain->AppendItem (m_currentTreeRoot, wxString (reinterpret_cast<const wxChar *>(de.fileName)), image);
 		}
 		else
 		{
@@ -247,16 +247,16 @@ void ISOBrowser::paintCurrentDirContents()
 		}
 
 		// Always append to the listview.
-		newItem = lvwMain->InsertItem (lvwMain->GetItemCount (), wxString (de.fileName), image);
-		lvwMain->SetItem (newItem, 1, wxString::Format ("%d", de.blockSize));
-		lvwMain->SetItem (newItem, 2, wxString::Format ("%d", de.copies));
-		lvwMain->SetItem (newItem, 3, wxString::Format ("%d", de.entryLengthBlocks));
-		lvwMain->SetItem (newItem, 4, wxString::Format ("%d", de.entryLengthBytes));
-		lvwMain->SetItem (newItem, 5, wxString (de.ext));
-		lvwMain->SetItem (newItem, 6, wxString::Format ("%d", de.flags));
-		lvwMain->SetItem (newItem, 7, wxString::Format ("%d", de.gap));
-		lvwMain->SetItem (newItem, 8, wxString::Format ("%d", de.id));
-		lvwMain->SetItem (newItem, 9, wxString::Format ("%d", de.lastCopy));
+		newItem = lvwMain->InsertItem (lvwMain->GetItemCount (), wxString (reinterpret_cast<const wxChar *>(de.fileName)), image);
+		lvwMain->SetItem (newItem, 1, wxString::Format (_T("%d"), de.blockSize));
+		lvwMain->SetItem (newItem, 2, wxString::Format (_T("%d"), de.copies));
+		lvwMain->SetItem (newItem, 3, wxString::Format (_T("%d"), de.entryLengthBlocks));
+		lvwMain->SetItem (newItem, 4, wxString::Format (_T("%d"), de.entryLengthBytes));
+		lvwMain->SetItem (newItem, 5, wxString (reinterpret_cast<const wxChar *>(de.ext)));
+		lvwMain->SetItem (newItem, 6, wxString::Format (_T("%d"), de.flags));
+		lvwMain->SetItem (newItem, 7, wxString::Format (_T("%d"), de.gap));
+		lvwMain->SetItem (newItem, 8, wxString::Format (_T("%d"), de.id));
+		lvwMain->SetItem (newItem, 9, wxString::Format (_T("%d"), de.lastCopy));
 
 		// data to sort by later
 		lvwMain->SetItemData(newItem, image);

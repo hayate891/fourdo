@@ -88,7 +88,7 @@ namespace fourdo { namespace swi
 								substr_length++;
 
 								final_str += wxString::Format(
-									format_str.substr(start, substr_length).c_str(), 
+									reinterpret_cast<const wxChar *>(format_str.substr(start, substr_length).c_str()), 
 									*(static_cast<int *>(var))
 								);
 
@@ -105,7 +105,7 @@ namespace fourdo { namespace swi
 								substr_length++;
 
 								final_str += wxString::Format(
-									format_str.substr(start, substr_length).c_str(),
+									reinterpret_cast<const wxChar *>(format_str.substr(start, substr_length).c_str()),
 									*(static_cast<unsigned int *>(var))
 								);
 
@@ -120,7 +120,7 @@ namespace fourdo { namespace swi
 								substr_length++;
 
 								final_str += wxString::Format(
-									format_str.substr(start, substr_length).c_str(),
+									reinterpret_cast<const wxChar *>(format_str.substr(start, substr_length).c_str()),
 									*(static_cast<float *>(var))
 								);
 
@@ -135,7 +135,7 @@ namespace fourdo { namespace swi
 								substr_length++;
 
 								final_str += wxString::Format(
-									format_str.substr(start, substr_length).c_str(),
+									reinterpret_cast<const wxChar *>(format_str.substr(start, substr_length).c_str()),
 									*(static_cast<char *>(var))
 								);
 
@@ -150,7 +150,7 @@ namespace fourdo { namespace swi
 								substr_length++;
 
 								final_str += wxString::Format(
-									format_str.substr(start, substr_length).c_str(),
+									reinterpret_cast<const wxChar *>(format_str.substr(start, substr_length).c_str()),
 									static_cast<char *>(var)
 								);
 
@@ -235,9 +235,9 @@ namespace fourdo { namespace swi
 			// append them now
 			// 
 			if (start < format_str.size())
-				final_str += wxString::Format(format_str.substr(start).c_str());
+				final_str += wxString::Format(reinterpret_cast<const wxChar *>(format_str.substr(start).c_str()));
 
-			std::printf(final_str.c_str());
+			std::printf(reinterpret_cast<const char *>(final_str.c_str()));
 		}
 		else
 			std::printf(format);

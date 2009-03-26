@@ -13,18 +13,12 @@ uint SetBits (uint value, uint setMask, uint setValue)
 wxString CharToBitString (char value)
 {
    const int  bits = 8;
-   char*      retVal;
    wxString   newRetVal;
 
-   retVal = new char[bits + 1];
    for (int x = 0; x < bits; x++)
    {
-      sprintf (&retVal [x], "%d", ((value & ((uint) pow ((double) 2, bits - x - 1))) > 0) ? 1 : 0);
+      newRetVal += wxString::Format(_T("%d"), ((value & ((uint) pow ((double) 2, bits - x - 1))) > 0) ? 1 : 0);
    }
-   retVal [bits] = 0;
-   
-   newRetVal = _T (retVal);
-   delete retVal;
    
    return newRetVal;
 }
@@ -32,18 +26,12 @@ wxString CharToBitString (char value)
 wxString UintToBitString (uint value)
 {
    const int  bits = 32;
-   char*      retVal;
    wxString   newRetVal;
 
-   retVal = new char[bits + 1];
    for (int x = 0; x < bits; x++)
    {
-      sprintf (&retVal [x], "%d", ((value & ((uint) pow ((double) 2, bits - x - 1))) > 0) ? 1 : 0);
+      newRetVal += wxString::Format(_T("%d"), ((value & ((uint) pow ((double) 2, bits - x - 1))) > 0) ? 1 : 0);
    }
-   retVal [bits] = 0;
-   
-   newRetVal = _T (retVal);
-   delete retVal;
 
    return newRetVal;
 }
