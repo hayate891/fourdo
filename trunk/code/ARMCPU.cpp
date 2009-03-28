@@ -188,23 +188,12 @@ gSecondROM=0;
 
 unsigned int __fastcall ARMCPU::calcbits(unsigned int num)
 {
-#ifdef GENRE_UNIX
-	asm(
-		"movl %1, %%eax;"
-		"bsr %%eax, %%eax;"
-		"mov %%eax, %0;"
-		: "=r" (num)
-		: "r" (num)
-		: "%eax"
-	);
-#else
-	__asm{         //calc bits - code is not portable!!!!!!!!!!!! x86 only!!!!!!!
-		mov     eax,num
-		bsr     eax,eax
-		mov	num,eax
-	 }
-#endif
- return num;
+	for( uint8 x = 0; x < 32; x++ )
+	{
+		if( num & (0x80000000>>x))
+			return (uint32)(31-x);
+	}
+	return 0;
 }
 
 __inline uint32 ARMCPU::SHIFT_NSC(uint32 value, uint8 shift, uint8 type)
@@ -1596,10 +1585,11 @@ void __inline ARMCPU::bdt_core(unsigned int opc)
 
 __inline void ARMCPU::ldm_accur(unsigned int opc, unsigned int base, unsigned int rn_ind)
 {
- unsigned short x=opc&0xffff;
- unsigned short list=opc&0xffff;
- unsigned int base_comp,	//по ней шагаем
-				i=0,tmp;
+	unsigned short x    = opc&0xffff;
+	unsigned short list = opc&0xffff;
+	unsigned int   base_comp;	//по ней шагаем
+	unsigned int   i=0;
+	unsigned int   tmp;
  
 	x = (x & 0x5555) + ((x >> 1) & 0x5555); 
 	x = (x & 0x3333) + ((x >> 2) & 0x3333); 
