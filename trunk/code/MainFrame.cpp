@@ -56,7 +56,7 @@ MainFrame::MainFrame( wxCmdLineParser* parser )
 
 	/////////////////////
 	// GUI Setup.
-	this->SetTitle( _T("4DO") );
+	this->SetTitle( "4DO" );
 	this->SetIcon( wxIcon( fourdo_xpm ) );
 	this->SetSize( 648, 546 );
 	this->CenterOnScreen();
@@ -69,7 +69,7 @@ MainFrame::MainFrame( wxCmdLineParser* parser )
 	ctlCanvas->SetBackgroundColour( *wxLIGHT_GREY );
 	mainSizer->Add( ctlCanvas, 1, wxEXPAND, 0, NULL );
 
-	ctlFourDOCanvas = new FourDOCanvas( this );
+	ctlFourDOCanvas = new FourDOCanvas( m_con->DMA()->GetRAMPointer( 0x002c0000 ), this );
 	ctlFourDOCanvas->SetBackgroundColour( *wxWHITE );
 	mainSizer->Add( ctlFourDOCanvas, 1, wxEXPAND, 0, NULL );
 
@@ -86,14 +86,14 @@ MainFrame::MainFrame( wxCmdLineParser* parser )
 
 	/////////////////////
 	// Handle command-line arguments.
-	if( parser->Found( _T("li") ) )
+	if( parser->Found( "li" ) )
 	{
-		parser->Found( _T("li"), &fileName );
+		parser->Found( "li", &fileName );
 		m_con->loadIso( fileName );
 	}
-	else if( parser->Found( _T("lc") ) )
+	else if( parser->Found( "lc" ) )
 	{
-		parser->Found( _T("lc"), &fileName );
+		parser->Found( "lc", &fileName );
 		m_con->loadBinary( fileName );
 	}
 }
@@ -123,7 +123,7 @@ void MainFrame::RunCycles()
 		sw.Pause();
 		
 		// Display total time metric
-		this->SetStatusText( wxString::Format( _T("Time: %ldms     Cycles:%u"), sw.Time(), cycles ), SB_INFO );
+		this->SetStatusText( wxString::Format( "Time: %ldms     Cycles:%u", sw.Time(), cycles ), SB_INFO );
 	}
 	else
 	{
