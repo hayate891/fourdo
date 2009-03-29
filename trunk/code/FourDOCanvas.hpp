@@ -16,6 +16,8 @@ public:
 		wxWindowID id = wxID_ANY
 		);
 	~FourDOCanvas();
+	
+	void UpdateImage();
 
 	uchar* getVRAMPointer();
 	void   setVRAMPointer(uchar* pointer);
@@ -30,6 +32,8 @@ protected:
 	
 	uchar* mVRAMPointer;
 	bool   mInitialized;
+	
+	GLubyte* mBitmapBytes;
 };
 
 #endif

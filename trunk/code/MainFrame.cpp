@@ -65,12 +65,8 @@ MainFrame::MainFrame( wxCmdLineParser* parser )
 	this->InitializeMenu ();
 	
 	wxBoxSizer* mainSizer = new wxBoxSizer( wxHORIZONTAL );
-	ctlCanvas = new MainCanvas( this, wxID_ANY, m_con->DMA()->GetRAMPointer( 0x002c0000 ) );
-	ctlCanvas->SetBackgroundColour( *wxLIGHT_GREY );
-	mainSizer->Add( ctlCanvas, 1, wxEXPAND, 0, NULL );
-
 	ctlFourDOCanvas = new FourDOCanvas( m_con->DMA()->GetRAMPointer( 0x002c0000 ), this );
-	ctlFourDOCanvas->SetBackgroundColour( *wxWHITE );
+	ctlFourDOCanvas->SetBackgroundColour( *wxBLACK );
 	mainSizer->Add( ctlFourDOCanvas, 1, wxEXPAND, 0, NULL );
 
 	this->SetSizer( mainSizer );
@@ -173,8 +169,8 @@ void MainFrame::InitializeMenu ()
 void MainFrame::OnMainTimer( wxTimerEvent & )
 {
 	this->RunCycles();
-	ctlCanvas->UpdateImage();
-	ctlCanvas->Refresh();
+	ctlFourDOCanvas->UpdateImage();
+	ctlFourDOCanvas->Refresh();
 }
 
 void MainFrame::OnMenuFileOpenISO( wxCommandEvent& WXUNUSED( event ) )

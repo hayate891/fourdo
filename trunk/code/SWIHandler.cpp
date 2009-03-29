@@ -324,12 +324,12 @@ namespace fourdo { namespace swi
 	///////////////////////////////////////////////////////////////
 	// ARM Interrupts
 	// 
-	void SWI_ARM_GetMemoryBaseAddress(ARMRegisters *registers, DMAController *dma)
+	void SWI_ARM_GetMemoryBaseAddress(ARMRegisters* WXUNUSED(registers), DMAController* WXUNUSED(dma))
 	{
 		//registers->USER[0] = ARM_GetMemoryBaseAddress();
 	}
 	
-	void SWI_ARM_HaltExecution(ARMRegisters *registers, DMAController *dma)
+	void SWI_ARM_HaltExecution(ARMRegisters* WXUNUSED(registers), DMAController* WXUNUSED(dma) )
 	{
 		//ARM_HaltExecution();
 	}
@@ -337,7 +337,7 @@ namespace fourdo { namespace swi
 	///////////////////////////////////////////////////////////////
 	// Meta Interrupts
 	//
-	void SWI_META_ImageEntryPoint(ARMRegisters *registers, DMAController *dma)
+	void SWI_META_ImageEntryPoint(ARMRegisters* WXUNUSED(registers), DMAController* WXUNUSED(dma) )
 	{
 		//META_ImageEntryPoint();
 	}
