@@ -22,12 +22,14 @@ namespace fourdo { namespace swi
 
 	// extern void Debug(void);
 	
+	/////////////////////////////////////////////////////////////////////////
 	// 
 	// ARM Interrupts
 	// 
 	void SWI_ARM_GetMemoryBaseAddress(ARMRegisters *registers, DMAController *dma);
 	void SWI_ARM_HaltExecution(ARMRegisters *registers, DMAController *dma);
 	
+	/////////////////////////////////////////////////////////////////////////
 	// 
 	// Meta Interrupts
 	//
@@ -39,9 +41,17 @@ namespace fourdo { namespace swi
 	// 
 	void SWI_META_ImageEntryPoint(ARMRegisters *registers, DMAController *dma);
 
+	/////////////////////////////////////////////////////////////////////////
 	// 
 	// Kernel Interrupts
 	// 
+	
+	// kprintf
+	void SWI_KRN_kprintf(ARMRegisters *registers, DMAController *dma);
+	
+	/////////////////////////
+	//
+	// Allocation
 	void SWI_KRN_malloc              (ARMRegisters *registers, DMAController *dma);
 	void SWI_KRN_AllocMem            (ARMRegisters *registers, DMAController *dma);
 	void SWI_KRN_AllocMemBlocks      (ARMRegisters *registers, DMAController *dma);

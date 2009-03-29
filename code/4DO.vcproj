@@ -402,6 +402,10 @@
 						RelativePath=".\SWI_Kernel_Mem.cpp"
 						>
 					</File>
+					<File
+						RelativePath=".\SWI_Kernel_Printf.cpp"
+						>
+					</File>
 				</Filter>
 			</Filter>
 		</Filter>
