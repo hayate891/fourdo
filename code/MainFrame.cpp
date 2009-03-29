@@ -86,11 +86,13 @@ MainFrame::MainFrame( wxCmdLineParser* parser )
 	{
 		parser->Found( "li", &fileName );
 		m_con->loadIso( fileName );
+		m_consoleRunning = true;
 	}
 	else if( parser->Found( "lc" ) )
 	{
 		parser->Found( "lc", &fileName );
 		m_con->loadBinary( fileName );
+		m_consoleRunning = true;
 	}
 }
 
