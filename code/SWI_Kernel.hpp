@@ -5,6 +5,7 @@
 #include <cstdio>
 
 typedef uint32 Item;
+typedef uint32 ItemPtr;
 typedef uint32 Err;
 
 typedef uint32 MemPtr;
@@ -12,6 +13,7 @@ typedef uint32 MemListPtr;
 typedef uint32 MemInfoPtr;
 typedef uint32 ListPtr;
 typedef uint32 TagArgPtr;
+typedef uint32 FunctionPtr;
 
 typedef uint32 CharPtr;
 
@@ -65,39 +67,39 @@ Err KRN_SanityCheckMemDebug(const TagArgPtr args);
 // ITEMS
 
 // Creating Items
-Item KRN_CreateBufferedMsg( const char *name, uint8 pri, Item mp, uint32 datasize );
-Item KRN_CreateIOReq( const char *name, uint8 pri, Item dev, Item mp );
-Item KRN_CreateItem( int32 ct, TagArg *p );
+Item KRN_CreateBufferedMsg( const CharPtr name, uint8 pri, Item mp, uint32 datasize );
+Item KRN_CreateIOReq( const CharPtr name, uint8 pri, Item dev, Item mp );
+Item KRN_CreateItem( int32 ct, TagArgPtr p );
 Item KRN_CreateItemVA( int32 ct, uint32 tags, ... );
-Item KRN_CreateMsg( const char *name, uint8 pri, Item mp );
-Item KRN_CreateMsgPort( const char *name, uint8 pri, uint32 signal );
-Item KRN_CreateSemaphore( const char *name, uint8 pri );
-Item KRN_CreateSmallMsg( const char *name, uint8 pri, Item mp );
-Item KRN_CreateThread( const char *name, uint8 pri, void (*code) (),int32 stacksize );
-Item KRN_CreateUniqueMsgPort( const char *name, uint8 pri, uint32 signal );
-Item KRN_CreateUniqueSemaphore( const char *name, uint8 pri );
+Item KRN_CreateMsg( const CharPtr name, uint8 pri, Item mp );
+Item KRN_CreateMsgPort( const CharPtr name, uint8 pri, uint32 signal );
+Item KRN_CreateSemaphore( const CharPtr name, uint8 pri );
+Item KRN_CreateSmallMsg( const CharPtr name, uint8 pri, Item mp );
+Item KRN_CreateThread( const CharPtr name, uint8 pri, FunctionPtr code, int32 stacksize );
+Item KRN_CreateUniqueMsgPort( const CharPtr name, uint8 pri, uint32 signal );
+Item KRN_CreateUniqueSemaphore( const CharPtr name, uint8 pri );
 
 // Opening Items
-Item KRN_FindAndOpenDevice( const char *name );
-Item KRN_FindAndOpenFolio( const char *name );
-Item KRN_FindAndOpenItem( int32 cType, TagArg *tp );
+Item KRN_FindAndOpenDevice( const CharPtr name );
+Item KRN_FindAndOpenFolio( const CharPtr name );
+Item KRN_FindAndOpenItem( int32 cType, TagArgPtr tp );
 Item KRN_FindAndOpenItemVA( int32 cType, uint32 tags, ... );
-Item KRN_FindAndOpenNamedItem( int32 ctype, const char *name );
-Item KRN_OpenItem( Item FoundItem, void *args );
-Item KRN_OpenNamedDevice( const char *name, uint32 a );
+Item KRN_FindAndOpenNamedItem( int32 ctype, const CharPtr name );
+Item KRN_OpenItem( Item FoundItem, MemPtr args );
+Item KRN_OpenNamedDevice( const CharPtr name, uint32 a );
 
 // Managing Items
-void* KRN_CheckItem( Item i, uint8 ftype, uint8 ntype );
-Item KRN_FindDevice( const char *name );
-Item KRN_FindFolio( const char *name );
-Item KRN_FindItem( int32 cType, TagArg *tp );
+ItemPtr KRN_CheckItem( Item i, uint8 ftype, uint8 ntype );
+Item KRN_FindDevice( const CharPtr name );
+Item KRN_FindFolio( const CharPtr name );
+Item KRN_FindItem( int32 cType, TagArgPtr tp );
 Item KRN_FindItemVA( int32 cType, uint32 tags, ...);
-Item KRN_FindMsgPort( const char *name );
-Item KRN_FindNamedItem( int32 ctype, const char *name );
-Item KRN_FindSemaphore( const char *name );
-Item KRN_FindTask( const char *name );
-Item KRN_FindVersionedItem( int32 ctype, const char *name, uint8 vers, uint8 rev );
-void* KRN_LookupItem( Item i );
+Item KRN_FindMsgPort( const CharPtr name );
+Item KRN_FindNamedItem( int32 ctype, const CharPtr name );
+Item KRN_FindSemaphore( const CharPtr name );
+Item KRN_FindTask( const CharPtr name );
+Item KRN_FindVersionedItem( int32 ctype, const CharPtr name, uint8 vers, uint8 rev );
+ItemPtr KRN_LookupItem( Item i );
 Err KRN_SetItemOwner( Item i, Item newOwner );
 int32 KRN_SetItemPri( Item i, uint8 newpri );
 

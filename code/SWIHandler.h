@@ -20,8 +20,6 @@ namespace fourdo { namespace swi
 	// 
 	extern std::map<uint32, swiHandler> swiToHandlerMap;
 
-	// extern void Debug(void);
-	
 	/////////////////////////////////////////////////////////////////////////
 	// 
 	// ARM Interrupts
@@ -50,7 +48,8 @@ namespace fourdo { namespace swi
 	void SWI_KRN_kprintf(ARMRegisters *registers, DMAController *dma);
 	
 	/////////////////////////
-	//
+	// Memory
+	
 	// Allocation
 	void SWI_KRN_malloc              (ARMRegisters *registers, DMAController *dma);
 	void SWI_KRN_AllocMem            (ARMRegisters *registers, DMAController *dma);
@@ -60,12 +59,12 @@ namespace fourdo { namespace swi
 	void SWI_KRN_AllocMemList        (ARMRegisters *registers, DMAController *dma);
 
 	// Deletion
-	void SWI_KRN_free             (ARMRegisters *registers, DMAController *dma);
-	void SWI_KRN_FreeMem          (ARMRegisters *registers, DMAController *dma);
-	void SWI_KRN_FreeMemList      (ARMRegisters *registers, DMAController *dma);
-	void SWI_KRN_FreeMemToMemList (ARMRegisters *registers, DMAController *dma);
-	void SWI_KRN_FreeMemToMemLists(ARMRegisters *registers, DMAController *dma);
-	void SWI_KRN_ScavengeMem      (ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_free             	 (ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_FreeMem             (ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_FreeMemList      	 (ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_FreeMemToMemList 	 (ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_FreeMemToMemLists	 (ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_ScavengeMem      	 (ARMRegisters *registers, DMAController *dma);
 
 	// Memory info
 	void SWI_KRN_AvailMem            (ARMRegisters *registers, DMAController *dma);
@@ -83,6 +82,56 @@ namespace fourdo { namespace swi
 	void SWI_KRN_DeleteMemDebug      (ARMRegisters *registers, DMAController *dma);
 	void SWI_KRN_SanityCheckMemDebug (ARMRegisters *registers, DMAController *dma);
 
+	/////////////////////////
+	// Items
+
+    // Creating Items
+    void SWI_KRN_CreateBufferedMsg     (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_CreateIOReq           (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_CreateItem            (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_CreateItemVA          (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_CreateMsg             (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_CreateMsgPort         (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_CreateSemaphore       (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_CreateSmallMsg        (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_CreateThread          (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_CreateUniqueMsgPort   (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_CreateUniqueSemaphore (ARMRegisters *registers, DMAController *dma);
+
+    // Opening Items
+    void SWI_KRN_FindAndOpenDevice     (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_FindAndOpenFolio      (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_FindAndOpenItem       (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_FindAndOpenItemVA     (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_FindAndOpenNamedItem  (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_OpenItem              (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_OpenNamedDevice       (ARMRegisters *registers, DMAController *dma);
+
+    // Managing Items
+    void SWI_KRN_CheckItem             (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_FindDevice            (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_FindFolio             (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_FindItem              (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_FindItemVA            (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_FindMsgPort           (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_FindNamedItem         (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_FindSemaphore         (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_FindTask              (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_FindVersionedItem     (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_LookupItem            (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_SetItemOwner          (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_SetItemPri            (ARMRegisters *registers, DMAController *dma);
+
+    // Closing and Deleting Items
+    void SWI_KRN_CloseItem             (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_CloseNamedDevice      (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_DeleteIOReq           (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_DeleteItem            (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_DeleteMsg             (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_DeleteMsgPort         (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_DeleteSemaphore       (ARMRegisters *registers, DMAController *dma);
+    void SWI_KRN_DeleteThread          (ARMRegisters *registers, DMAController *dma);
+
 /*
 	Item CreateSizedItem(int32 ctype,TagArg *p,int32 size);
 	extern int32 WaitSignal(uint32 sigMask);
@@ -99,7 +148,6 @@ namespace fourdo { namespace swi
 	int32 SetItemPri(Item i,uint8 newpri);
 	void *AllocMemBlocks(int32 size, uint32 typebits);
 */
-	void prepare_printf(ARMRegisters *registers, DMAController *dma);
 /*
 	extern Item GetThisMsg(Item msg);
 	extern Err SendMsg(Item mp,Item msg,void *dataptr, int32 datasize);
