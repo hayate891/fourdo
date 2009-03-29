@@ -387,6 +387,22 @@
 					RelativePath=".\SWI_Meta.hpp"
 					>
 				</File>
+				<Filter
+					Name="Kernel"
+					>
+					<File
+						RelativePath=".\SWI_Kernel.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\SWI_Kernel_Items.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\SWI_Kernel_Mem.cpp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 	</Files>
