@@ -40,8 +40,38 @@ namespace fourdo { namespace swi
 	void SWI_META_ImageEntryPoint(ARMRegisters *registers, DMAController *dma);
 
 	// 
-	// kernel software interrupts
+	// Kernel Interrupts
 	// 
+	void SWI_KRN_malloc              (ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_AllocMem            (ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_AllocMemBlocks      (ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_AllocMemFromMemList (ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_AllocMemFromMemLists(ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_AllocMemList        (ARMRegisters *registers, DMAController *dma);
+
+	// Deletion
+	void SWI_KRN_free             (ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_FreeMem          (ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_FreeMemList      (ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_FreeMemToMemList (ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_FreeMemToMemLists(ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_ScavengeMem      (ARMRegisters *registers, DMAController *dma);
+
+	// Memory info
+	void SWI_KRN_AvailMem            (ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_ControlMem          (ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_GetMemAllocAlignment(ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_GetMemTrackSize     (ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_GetMemType          (ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_GetPageSize         (ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_IsMemReadable       (ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_IsMemWritable       (ARMRegisters *registers, DMAController *dma);
+
+	// Memory debugging
+	void SWI_KRN_DumpMemDebug        (ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_CreateMemDebug      (ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_DeleteMemDebug      (ARMRegisters *registers, DMAController *dma);
+	void SWI_KRN_SanityCheckMemDebug (ARMRegisters *registers, DMAController *dma);
 
 /*
 	Item CreateSizedItem(int32 ctype,TagArg *p,int32 size);

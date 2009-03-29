@@ -8,6 +8,9 @@
 
 #include "SWI_ARM.hpp"
 #include "SWI_Meta.hpp"
+#include "SWI_Kernel.hpp"
+
+#pragma warning (disable : 4100) // Disable damned "unused param" warnings.
 
 namespace fourdo { namespace swi
 {
@@ -324,12 +327,12 @@ namespace fourdo { namespace swi
 	///////////////////////////////////////////////////////////////
 	// ARM Interrupts
 	// 
-	void SWI_ARM_GetMemoryBaseAddress(ARMRegisters* WXUNUSED(registers), DMAController* WXUNUSED(dma))
+	void SWI_ARM_GetMemoryBaseAddress(ARMRegisters* registers, DMAController* dma)
 	{
 		//registers->USER[0] = ARM_GetMemoryBaseAddress();
 	}
 	
-	void SWI_ARM_HaltExecution(ARMRegisters* WXUNUSED(registers), DMAController* WXUNUSED(dma) )
+	void SWI_ARM_HaltExecution(ARMRegisters* registers, DMAController* dma )
 	{
 		//ARM_HaltExecution();
 	}
@@ -337,9 +340,142 @@ namespace fourdo { namespace swi
 	///////////////////////////////////////////////////////////////
 	// Meta Interrupts
 	//
-	void SWI_META_ImageEntryPoint(ARMRegisters* WXUNUSED(registers), DMAController* WXUNUSED(dma) )
+	void SWI_META_ImageEntryPoint(ARMRegisters* registers, DMAController* dma )
 	{
 		//META_ImageEntryPoint();
 	}
+	
+	///////////////////////////////////////////////////////////////
+	// Kernel Interrupts
+	//
+	void SWI_KRN_malloc              (ARMRegisters *registers, DMAController *dma)
+	{
+		registers->USER[0] = KRN_malloc( registers->USER[1] );
+	}
+	
+	void SWI_KRN_AllocMem            (ARMRegisters *registers, DMAController *dma)
+	{
+		registers->USER[0] = KRN_AllocMem( registers->USER[1], registers->USER[2] );
+	}
+
+	void SWI_KRN_AllocMemBlocks      (ARMRegisters *registers, DMAController *dma)
+	{
+		registers->USER[0] = KRN_AllocMemBlocks( registers->USER[1], registers->USER[2] );
+	}
+
+	void SWI_KRN_AllocMemFromMemList (ARMRegisters *registers, DMAController *dma)
+	{
+		registers->USER[0] = KRN_AllocMemFromMemList( registers->USER[1], registers->USER[2], registers->USER[3] );
+	}
+
+	void SWI_KRN_AllocMemFromMemLists(ARMRegisters *registers, DMAController *dma)
+	{
+		registers->USER[0] = KRN_AllocMemFromMemLists( registers->USER[1], registers->USER[2], registers->USER[3] );
+	}
+
+	void SWI_KRN_AllocMemList        (ARMRegisters *registers, DMAController *dma)
+	{
+		registers->USER[0] = KRN_AllocMemList( registers->USER[1], registers->USER[2] );
+	}
+
+
+	// Deletion
+	void SWI_KRN_free             (ARMRegisters *registers, DMAController *dma)
+	{
+		KRN_free( registers->USER[0] );
+	}
+
+	void SWI_KRN_FreeMem          (ARMRegisters *registers, DMAController *dma)
+	{
+		KRN_FreeMem( registers->USER[0], registers->USER[1] );
+	}
+
+	void SWI_KRN_FreeMemList      (ARMRegisters *registers, DMAController *dma)
+	{
+		KRN_FreeMemList( registers->USER[0] );
+	}
+
+	void SWI_KRN_FreeMemToMemList (ARMRegisters *registers, DMAController *dma)
+	{
+		KRN_FreeMemToMemList( registers->USER[0], registers->USER[1], registers->USER[2] );
+	}
+
+	void SWI_KRN_FreeMemToMemLists(ARMRegisters *registers, DMAController *dma)
+	{
+		KRN_FreeMemToMemLists( registers->USER[0], registers->USER[1], registers->USER[2] );
+	}
+
+	void SWI_KRN_ScavengeMem      (ARMRegisters *registers, DMAController *dma)
+	{
+		 registers->USER[0] = KRN_ScavengeMem();
+	}
+
+
+	// Memory info
+	void SWI_KRN_AvailMem            (ARMRegisters *registers, DMAController *dma)
+	{
+		KRN_AvailMem( registers->USER[0], registers->USER[1] );
+	}
+
+	void SWI_KRN_ControlMem          (ARMRegisters *registers, DMAController *dma)
+	{
+		// DANGER! This is probably supposed to read the last param from the stack!
+		registers->USER[0] = KRN_ControlMem( registers->USER[1], registers->USER[2], registers->USER[3], registers->USER[4] );
+	}
+
+	void SWI_KRN_GetMemAllocAlignment(ARMRegisters *registers, DMAController *dma)
+	{
+		registers->USER[0] = KRN_GetMemAllocAlignment( registers->USER[1] );
+	}
+
+	void SWI_KRN_GetMemTrackSize     (ARMRegisters *registers, DMAController *dma)
+	{
+		registers->USER[0] = KRN_GetMemTrackSize( registers->USER[1] );
+	}
+
+	void SWI_KRN_GetMemType          (ARMRegisters *registers, DMAController *dma)
+	{
+		registers->USER[0] = KRN_GetMemType( registers->USER[1] );
+	}
+
+	void SWI_KRN_GetPageSize         (ARMRegisters *registers, DMAController *dma)
+	{
+		registers->USER[0] = KRN_GetPageSize( registers->USER[1] );
+	}
+
+	void SWI_KRN_IsMemReadable       (ARMRegisters *registers, DMAController *dma)
+	{
+		registers->USER[0] = KRN_IsMemReadable( registers->USER[1], registers->USER[2] );
+	}
+
+	void SWI_KRN_IsMemWritable       (ARMRegisters *registers, DMAController *dma)
+	{
+		registers->USER[0] = KRN_IsMemWritable( registers->USER[1], registers->USER[2] );
+	}
+
+
+	// Memory debugging
+	void SWI_KRN_DumpMemDebug        (ARMRegisters *registers, DMAController *dma)
+	{
+		registers->USER[0] = KRN_DumpMemDebug( registers->USER[1] );
+	}
+
+	void SWI_KRN_CreateMemDebug      (ARMRegisters *registers, DMAController *dma)
+	{
+		registers->USER[0] = KRN_CreateMemDebug( registers->USER[1], registers->USER[2] );
+	}
+
+	void SWI_KRN_DeleteMemDebug      (ARMRegisters *registers, DMAController *dma)
+	{
+		registers->USER[0] = KRN_DeleteMemDebug();
+	}
+
+	void SWI_KRN_SanityCheckMemDebug (ARMRegisters *registers, DMAController *dma)
+	{
+		registers->USER[0] = KRN_SanityCheckMemDebug( registers->USER[1] );
+	}
+
 }
 }
+
+#pragma warning (default : 4100)
