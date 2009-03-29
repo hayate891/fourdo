@@ -58,6 +58,8 @@ namespace fourdo { namespace swi
 	///////////////////////////////////////////////////////////////
 	// Kernel Interrupts
 	//
+	
+	// kprintf
 	void SWI_KRN_kprintf(ARMRegisters *registers, DMAController *dma)
 	{
 		std::string format(reinterpret_cast<const char *>(dma->GetRAMPointer(registers->USER[0])));
@@ -115,6 +117,11 @@ namespace fourdo { namespace swi
 			argv.size(), 
 			(argv.size() ? &argv.front() : NULL));
 	}
+	
+	/////////////////////////////////////
+	// Memory
+	
+	// Mem allocation
 	
 	void SWI_KRN_malloc              (ARMRegisters *registers, DMAController *dma)
 	{
@@ -242,6 +249,177 @@ namespace fourdo { namespace swi
 	{
 		registers->USER[0] = KRN_SanityCheckMemDebug( registers->USER[1] );
 	}
+	
+	/////////////////////////////////////
+	// Items
+	
+	// Creating items
+	
+    void SWI_KRN_CreateBufferedMsg     (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_CreateIOReq           (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_CreateItem            (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_CreateItemVA          (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_CreateMsg             (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_CreateMsgPort         (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_CreateSemaphore       (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_CreateSmallMsg        (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_CreateThread          (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_CreateUniqueMsgPort   (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_CreateUniqueSemaphore (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+
+    // Opening Items
+    
+    void SWI_KRN_FindAndOpenDevice     (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_FindAndOpenFolio      (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_FindAndOpenItem       (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_FindAndOpenItemVA     (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_FindAndOpenNamedItem  (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_OpenItem              (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_OpenNamedDevice       (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+
+    // Managing Items
+    
+    void SWI_KRN_CheckItem             (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_FindDevice            (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_FindFolio             (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_FindItem              (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_FindItemVA            (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_FindMsgPort           (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_FindNamedItem         (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_FindSemaphore         (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_FindTask              (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_FindVersionedItem     (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_LookupItem            (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_SetItemOwner          (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_SetItemPri            (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+
+    // Closing and Deleting Items
+    
+    void SWI_KRN_CloseItem             (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_CloseNamedDevice      (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_DeleteIOReq           (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_DeleteItem            (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_DeleteMsg             (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_DeleteMsgPort         (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_DeleteSemaphore       (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
+    void SWI_KRN_DeleteThread          (ARMRegisters *registers, DMAController *dma)
+	{
+	}
+
 
 }
 }
