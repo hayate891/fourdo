@@ -2,7 +2,7 @@ AUTOMAKE_OPTIONS = foreign
 SUBDIRS = filesystem
 
 bin_PROGRAMS = 4do 
-4do_SOURCES = ARMCPU.cpp BitMath.cpp Console.cpp DMAController.cpp FourDOApp.cpp FourDOCanvas.cpp ImageViewer.cpp ISOBrowser.cpp KernelFaker.cpp MainCanvas.cpp MainFrame.cpp SWIHandler.cpp
+4do_SOURCES = ARMCPU.cpp BitMath.cpp Console.cpp DMAController.cpp FourDOApp.cpp FourDOCanvas.cpp ImageViewer.cpp ISOBrowser.cpp KernelFaker.cpp MainFrame.cpp SWIHandler.cpp
 
 AM_CPPFLAGS = -I./filesystem -I/usr/include/wx-2.8 -I/usr/lib/wx/include/gtk2-ansi-release-2.8 -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -D__WXGTK__ -DGENRE_UNIX -pthread
 
