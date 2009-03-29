@@ -305,14 +305,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MainCanvas.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\MainCanvas.h"
-				>
-			</File>
-			<File
 				RelativePath=".\MainFrame.cpp"
 				>
 			</File>

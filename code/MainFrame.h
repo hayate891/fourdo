@@ -7,7 +7,6 @@
 #include "wx/cmdline.h"
 #include "wx/stopwatch.h"
 
-#include "MainCanvas.h"
 #include "FourDOCanvas.hpp"
 
 #include "types.h"
@@ -44,7 +43,6 @@ private:
 	Console* m_con;
 	bool     m_consoleRunning;
 
-	MainCanvas*    ctlCanvas;
 	FourDOCanvas*  ctlFourDOCanvas;
 	wxTimer*	   tmrMain;
 	
