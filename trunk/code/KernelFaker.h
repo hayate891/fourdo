@@ -6,7 +6,7 @@
 
 typedef uint32 swiCode; enum {
 	SWI_NUM_UNKNOWN_KERNEL_ENTRY = 0x0080000,
-	SWI_NUM_IMAGE_ENTRY_POINT    = 0x0080100,
+	SWI_NUM_IMAGE_ENTRY_POINT    = 0x0081000,
 };
 
 class KernelFaker
