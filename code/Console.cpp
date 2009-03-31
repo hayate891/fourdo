@@ -69,7 +69,7 @@ bool Console::loadIso( wxString fileName )
 	m_CPU->ARM.USER[7]  = KernelFaker::getFakeKernelBase();
 	m_CPU->ARM.USER[8]  = 0x00000000;
 	m_CPU->ARM.USER[9]  = 0x400002CC;
-	m_CPU->ARM.USER[10] = 0x0007EFE0;
+	m_CPU->ARM.USER[10] = 0x00030000;
 	m_CPU->ARM.USER[11] = 0x00000000;
 	m_CPU->ARM.USER[12] = 0x00078508;
 	m_CPU->ARM.USER[13] = 0x00000000;
