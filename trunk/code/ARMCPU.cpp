@@ -1187,7 +1187,7 @@ int __fastcall ARMCPU::Execute(unsigned int MCLKs)
 
 					uint32  swi = cmd & 0x00FFFFFF;
 
-					std::map<uint32, fourdo::swi::swiHandler>::iterator it = fourdo::swi::swiToHandlerMap.find(swi);
+				std::map<uint32, fourdo::swi::swiHandler>::iterator it = fourdo::swi::swiToHandlerMap.find(swi);
 
 					if (it != fourdo::swi::swiToHandlerMap.end())
 						it->second(&ARM, DMA);
