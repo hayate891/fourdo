@@ -21,7 +21,49 @@ typedef struct
 static kernelTableEntry kernelTable[] =
 	{
 		{ -0x78, SWI_NUM_IMAGE_ENTRY_POINT }, // Code that runs at image entry point
-	};
+		
+        { -0x3C, SWI_NUM_MEMCPY },
+        { -0x38, SWI_NUM_MEMSET },
+        { -0xB4, SWI_NUM_NEXTTAGARG },
+        { -0xB0, SWI_NUM_FINDTAGARG },
+        { -0xA4, SWI_NUM_CHECKIO },
+        { -0x98, SWI_NUM_FINDIMAGE },
+        { -0x64, SWI_NUM_FINDMH },
+        { -0x60, SWI_NUM_TICKS2TIMEVAL },
+        { -0x5C, SWI_NUM_GETSYSERR },
+        { -0x58, SWI_NUM_VFPRINTF },
+        { -0x4C, SWI_NUM_USEC2TICKS },
+        { -0x48, SWI_NUM_FINSERT },
+        { -0x40, SWI_NUM_GETPAGESIZE },
+        
+        { -0x1C, SWI_NUM_ALLOC_MEM },
+        { -0x70, SWI_NUM_ALLOC_MEMLIST },
+        { -0x68, SWI_NUM_ALLOC_MEMFROMMEMLIST },
+        { -0x20, SWI_NUM_FREE_MEM },
+        { -0x74, SWI_NUM_FREE_MEMLIST },
+        { -0x6C, SWI_NUM_FREE_MEMFROMMEMLIST },
+        { -0x2C, SWI_NUM_SCAVENGE_MEM },
+        { -0x9C, SWI_NUM_GET_MEMALLOCALIGNMENT },
+        { -0xA0, SWI_NUM_GET_MEMTRACKSIZE },
+        { -0xA8, SWI_NUM_GET_ISMEMREADABLE },
+        { -0xAC, SWI_NUM_GET_ISMEMWRITABLE },
+        
+        { -0x30, SWI_NUM_LOOKUPITEM },
+        { -0x34, SWI_NUM_LOCATEITEM },
+        { -0x44, SWI_NUM_CHECKITEM },
+        { -0x80, SWI_NUM_ITEMOPENED },
+        
+        { -0x24, SWI_NUM_INITLIST },
+        { -0x08, SWI_NUM_ADDHEAD },
+        { -0x10, SWI_NUM_ADDTAIL },
+        { -0x54, SWI_NUM_INSERTHEAD },
+        { -0x14, SWI_NUM_INSERTTAIL },
+        { -0x04, SWI_NUM_REMHEAD },
+        { -0x0C, SWI_NUM_REMTAIL },
+        { -0x18, SWI_NUM_REMOVENODE },
+        { -0x50, SWI_NUM_SETNODEPRI },
+        { -0x28, SWI_NUM_FINDNAMEDNODE },
+    };
 
 #define cnt_of_array(n) (sizeof(n)/sizeof(n[0])) 
 

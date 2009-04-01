@@ -28,6 +28,22 @@ namespace fourdo { namespace swi
 		map.insert(std::pair<uint32, swiHandler>(SWI_NUM_IMAGE_ENTRY_POINT, &fourdo::swi::SWI_META_ImageEntryPoint));
 		
 		map.insert(std::pair<uint32, swiHandler>(0x1000e, &fourdo::swi::SWI_KRN_kprintf));
+		
+		map.insert(std::pair<uint32, swiHandler>(SWI_NUM_ALLOC_MEM,             &fourdo::swi::SWI_KRN_AllocMem));
+		map.insert(std::pair<uint32, swiHandler>(0x1000d,                       &fourdo::swi::SWI_KRN_AllocMemBlocks));
+		map.insert(std::pair<uint32, swiHandler>(SWI_NUM_ALLOC_MEMFROMMEMLIST,  &fourdo::swi::SWI_KRN_AllocMemFromMemLists));
+		map.insert(std::pair<uint32, swiHandler>(SWI_NUM_ALLOC_MEMLIST,         &fourdo::swi::SWI_KRN_AllocMemList));
+		map.insert(std::pair<uint32, swiHandler>(SWI_NUM_FREE_MEM,              &fourdo::swi::SWI_KRN_FreeMem));
+		map.insert(std::pair<uint32, swiHandler>(SWI_NUM_FREE_MEMLIST,          &fourdo::swi::SWI_KRN_FreeMemList));
+		map.insert(std::pair<uint32, swiHandler>(SWI_NUM_FREE_MEMFROMMEMLIST,   &fourdo::swi::SWI_KRN_FreeMemToMemList));
+        map.insert(std::pair<uint32, swiHandler>(0x10021,                       &fourdo::swi::SWI_KRN_ScavengeMem));
+		map.insert(std::pair<uint32, swiHandler>(SWI_NUM_SCAVENGE_MEM,          &fourdo::swi::SWI_KRN_ScavengeMem));
+		map.insert(std::pair<uint32, swiHandler>(0x10014,                       &fourdo::swi::SWI_KRN_ControlMem));
+		map.insert(std::pair<uint32, swiHandler>(SWI_NUM_GET_MEMALLOCALIGNMENT, &fourdo::swi::SWI_KRN_GetMemAllocAlignment));
+		map.insert(std::pair<uint32, swiHandler>(SWI_NUM_GET_MEMTRACKSIZE,      &fourdo::swi::SWI_KRN_GetMemTrackSize));
+		map.insert(std::pair<uint32, swiHandler>(SWI_NUM_GETPAGESIZE,           &fourdo::swi::SWI_KRN_GetPageSize));
+		map.insert(std::pair<uint32, swiHandler>(SWI_NUM_GET_ISMEMREADABLE,     &fourdo::swi::SWI_KRN_IsMemReadable));
+		map.insert(std::pair<uint32, swiHandler>(SWI_NUM_GET_ISMEMWRITABLE,     &fourdo::swi::SWI_KRN_IsMemWritable));
 
 		return map;
 	}
