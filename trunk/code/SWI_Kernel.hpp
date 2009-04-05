@@ -4,23 +4,8 @@
 #include "types.h"
 #include <cstdio>
 
-typedef uint32 Item;
-typedef uint32 ItemPtr;
-typedef uint32 Err;
-
-typedef uint32 MemPtr;
-typedef uint32 MemListPtr;
-typedef uint32 MemInfoPtr;
-typedef uint32 ListPtr;
-typedef uint32 TagArgPtr;
-typedef uint32 FunctionPtr;
-
-typedef uint32 CharPtr;
-
-typedef void List;
-typedef void MemList;
-typedef void MemInfo;
-typedef void TagArg;
+#include "KernelTypes.hpp"
+#include "DMAController.h"
 
 ///////////////////////////////////////////////////////////
 // GENERAL
@@ -33,7 +18,7 @@ void KRN_kprintf(const char *format, int argc, void **argv);
 
 // Allocation
 MemPtr KRN_malloc( int32 size );
-MemPtr KRN_AllocMem( int32 s, uint32 t );
+MemPtr KRN_AllocMem( int32 s, uint32 t );//MemPtr KRN_AllocMem( int32 s, uint32 t );
 MemPtr KRN_AllocMemBlocks( int32 size, uint32 typebits );
 MemPtr KRN_AllocMemFromMemList( MemListPtr ml, int32 size, uint32 memflags);
 MemPtr KRN_AllocMemFromMemLists( ListPtr l, int32 size, uint32 memflags);
@@ -112,32 +97,5 @@ Err KRN_DeleteMsg( Item it );
 Err KRN_DeleteMsgPort( Item it );
 Err KRN_DeleteSemaphore( Item s );
 Err KRN_DeleteThread( Item x );
-
-///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////
-// JMK This is just here for reference
-typedef struct ItemNode
-{
-    struct ItemNode *n_Next; /*pointer to next itemnode in */
-
-                                /* list */
-    struct ItemNode *n_Prev; /*pointer to previous itemnode in 
-
-                                /* list */
-    uint8 n_SubsysType;    /* what folio manages this node */
-    uint8 n_Type;        /* what type of node for the folio */
-    uint8 n_Priority;    /* queueing priority */
-    uint8 n_Flags;        /* misc flags, see below */
-    int32 n_Size;        /* total size of node including hdr */
-    char *n_Name;        /* ptr to null terminated string or NULL*/
-    uint8 n_Version;    /* version of of this itemnode */
-    uint8 n_Revision;    /* revision of this itemnode */
-    uint8 n_FolioFlags;    /* flags for this item's folio */
-    uint8 n_ItemFlags;    /* additional system item flags */
-    Item  n_Item;        /* ItemNumber for this data structure */
-    Item  n_Owner;        /* creator, present owner, disposer */
-    void *n_ReservedP;    /* Reserved pointer */
-} ItemNode, *ItemNodeP;
 
 #endif

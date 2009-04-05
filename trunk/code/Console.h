@@ -6,6 +6,7 @@
 #include "types.h"
 #include "ARMCPU.h"
 #include "DMAController.h"
+#include "KernelFaker.hpp"
 
 //////////////////////////////////////////////////
 
@@ -24,8 +25,9 @@ public:
    void Reset();
 
 protected:
-   ARMCPU*         m_CPU;
-   DMAController*  m_DMA;
+   ARMCPU*         mCPU;
+   DMAController*  mDMA;
+   KernelFaker*    mKernelFaker;
 };
 
 #endif //_INC_CONSOLE

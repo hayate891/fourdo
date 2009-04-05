@@ -359,14 +359,6 @@
 					RelativePath=".\DMAController.h"
 					>
 				</File>
-				<File
-					RelativePath=".\KernelFaker.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\KernelFaker.h"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="SWI"
@@ -390,6 +382,18 @@
 				<Filter
 					Name="Kernel"
 					>
+					<File
+						RelativePath=".\KernelFaker.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\KernelFaker.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\KernelTypes.hpp"
+						>
+					</File>
 					<File
 						RelativePath=".\SWI_Kernel.hpp"
 						>
