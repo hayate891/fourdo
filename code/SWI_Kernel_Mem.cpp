@@ -1,5 +1,8 @@
 #include "SWI_Kernel.hpp"
 
+#include "KernelFaker.hpp"
+#include "BitMath.h"
+
 #pragma warning (disable : 4100) // Disable damned "unused param" warnings.
 
 // Allocation

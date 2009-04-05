@@ -3,7 +3,7 @@
 #include <wx/string.h>
 
 #include "BitMath.h"
-#include "KernelFaker.h"
+#include "KernelFaker.hpp"
 #include "SWIHandler.h"
 
 #include "SWI_ARM.hpp"

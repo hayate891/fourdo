@@ -1,9 +1,9 @@
-#include "KernelFaker.h"
+#include "KernelFaker.hpp"
 #include "BitMath.h"
 
-#define FAKE_KERNEL_BASE   ( 0x00021230 ) // Memory location of fake kernel table.
+#define FAKE_KERNEL_BASE   ( 0x00020230 ) // Memory location of fake kernel table.
 #define KERNEL_OFFSET_MIN  (-0x0230 )	  // Minimum offset for an entry
-#define KERNEL_OFFSET_MAX  ( 0x01FC )     // Maximum offset for an entry
+#define KERNEL_OFFSET_MAX  (-0x0004 )     // Maximum offset for an entry
 #define KERNEL_ENTRY_COUNT ( ( KERNEL_OFFSET_MAX - KERNEL_OFFSET_MIN) / 4 + 1 )
 
 #define FAKE_HANDLER_BASE  ( 0x00022000 ) // Memory location for the start of the fake SWI handlers.
@@ -82,18 +82,25 @@ KernelFaker::~KernelFaker()
 
 uint32 KernelFaker::getFakeKernelBase()
 {
-	return (uint32)FAKE_KERNEL_BASE;
+    return FAKE_KERNEL_BASE;
 }
 
-void KernelFaker::InitializeFakeKernel( DMAController* DMA )
+void KernelFaker::init( DMAController* aDMA )
+{
+    mDMA = aDMA;
+    
+    this->InitializeFakeKernel();
+}
+
+void KernelFaker::InitializeFakeKernel()
 {
 	uint32* tablePtr;
 	uint32* tablePtrBase;
 	uint32* handlerPtr;
 	uint32* handlerPtrBase;
 	
-	tablePtrBase   = (uint32*)DMA->GetRAMPointer( FAKE_KERNEL_BASE );
-	handlerPtrBase = (uint32*)DMA->GetRAMPointer( FAKE_HANDLER_BASE );
+	tablePtrBase   = (uint32*)mDMA->GetRAMPointer( FAKE_KERNEL_BASE );
+	handlerPtrBase = (uint32*)mDMA->GetRAMPointer( FAKE_HANDLER_BASE );
 	
 	///////////////////////////////////////////
 	// First, initialize all table entries to contain pointers to 
