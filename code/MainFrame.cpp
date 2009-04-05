@@ -1,6 +1,5 @@
 #include "MainFrame.h"
 #include "ImageViewer.h"
-#include "KernelFaker.h"
 
 #include "wx/settings.h"
 
