@@ -4,6 +4,7 @@
 	Version="9.00"
 	Name="4DO"
 	ProjectGUID="{9F538DD6-FEE8-41F5-AD82-030DAC287251}"
+	RootNamespace="4DO"
 	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
@@ -158,7 +159,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="DebugExtra|Win32"
+			Name="DebugJohnny|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
@@ -181,8 +182,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(WXWIN)\include&quot;;&quot;$(WXWIN)\contrib\include&quot;;&quot;$(WXWIN)\lib\vc_lib\mswd&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;__WXMSW__;__WXDEBUG__;__FOURDODEBUG__;_WINDOWS;NOPCH;_CRT_SECURE_NO_DEPRECATE;wxUSE_CMDLINE_PARSER=1"
+				AdditionalIncludeDirectories="&quot;$(WXWIN)\include\msvc&quot;;&quot;$(WXWIN)\include&quot;;&quot;$(WXWIN)\contrib\include&quot;;&quot;$(WXWIN)\lib\vc_lib\mswd&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;__WXMSW__;__WXDEBUG__;_WINDOWS;NOPCH;_CRT_SECURE_NO_DEPRECATE;wxUSE_CMDLINE_PARSER=1;wxUSE_GLCANVAS=1"
 				RuntimeLibrary="1"
 				PrecompiledHeaderFile=".\vc_mswd\grid/grid.pch"
 				WarningLevel="4"
