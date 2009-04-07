@@ -20,6 +20,14 @@ inline uint32 ByteSwap( uint32 number )
 	);
 }
 
+inline uint32 ByteSwapMem( uint32* memory, uint32 lengthInWords )
+{
+	for( uint32 x = 0; x < lengthInWords; x++ )
+	{
+	    memory[x] = ByteSwap(memory[x]);
+	}
+}
+
 inline uint32 AlignmentSwap( uint32 number )
 {
 	return 
