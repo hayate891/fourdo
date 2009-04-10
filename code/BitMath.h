@@ -3,6 +3,7 @@
 
 #include "types.h"
 #include "wx/wx.h"
+#include <string>
 
 #include <math.h>
 #include <cstdio>
@@ -20,9 +21,9 @@ inline uint32 ByteSwap( uint32 number )
 	);
 }
 
-inline uint32 ByteSwapMem( uint32* memory, uint32 lengthInWords )
+inline void ByteSwapMem( uint32* memory, uint32 lengthInBytes )
 {
-	for( uint32 x = 0; x < lengthInWords; x++ )
+	for( uint32 x = 0; x < (lengthInBytes+(sizeof(uint32*)-1))/(sizeof(uint32*)); x++ )
 	{
 	    memory[x] = ByteSwap(memory[x]);
 	}
@@ -30,11 +31,7 @@ inline uint32 ByteSwapMem( uint32* memory, uint32 lengthInWords )
 
 inline uint32 AlignmentSwap( uint32 number )
 {
-	return 
-	(
-		(number & 0xFFFFFFFC) | 
-		(~(number & 0x00000003) & 0x00000003)
-	);
+	return (number ^ 0x3);
 }
 
 inline uint32 WordAlign( uint32 number )
@@ -53,5 +50,7 @@ uint SetBits (uint value, uint setMask, uint setValue);
 wxString CharToBitString (char value);
 wxString UintToBitString (uint value);
 wxString UintToHexString (uint value);
+
+std::string ReadSwappedString(char* buffer);
 
 #endif //_INC_BITMATH

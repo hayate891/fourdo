@@ -78,8 +78,11 @@ namespace fourdo { namespace swi
 	// kprintf
 	void SWI_KRN_kprintf(ARMRegisters *registers, DMAController *dma)
 	{
-		std::string format(reinterpret_cast<const char *>(dma->GetRAMPointer(registers->USER[0])));
-
+		//std::string format(reinterpret_cast<const char *>(dma->GetRAMPointer(registers->USER[0])));
+		std::string format;
+        
+        format = ReadSwappedString((char*)(dma->GetRAMPointer(registers->USER[0])));
+        
 		// 
 		// parse the format string to determine how many more arguments 
 		// we need to get from registers and the stack

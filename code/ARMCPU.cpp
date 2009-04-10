@@ -1260,7 +1260,6 @@ void __inline ARMCPU::bdt_core(unsigned int opc)
 	{	
 		if(opc&0x8000)CYCLES-=SCYCLE+NCYCLE;
 
-		//addr=can_multy_read_direct(base, opc);	//проверка на безопасность
 		addr=base;
 		if(addr)	//возможна безопасная запись?
 		{
@@ -1387,7 +1386,6 @@ void __inline ARMCPU::bdt_core(unsigned int opc)
 			stm_accur(opc,base,rn_ind);
 			return;
 		}
-		//addr=can_multy_write_direct(base, opc);	//проверка на безопасность
 		addr=base;
 		if(addr)	//возможна безопасная запись?
 		{
@@ -1734,68 +1732,4 @@ __inline void ARMCPU::stm_accur(unsigned int opc, unsigned int base, unsigned in
 
 	CYCLES-=(x-2)*SCYCLE+NCYCLE+NCYCLE;
 
-}
-
-__inline unsigned int* ARMCPU::can_multy_read_direct(unsigned int base, unsigned int )
-{
-	return (unsigned int *)DMA->GetRAMPointer( base );
-/*
- unsigned int index;
-	base&=~3;
-	if(opc&(1<<23))
-	{
-		if (base<0x00300000 && (base+68)<0x00300000) //dram1&dram2&vram
-		{
-			return (unsigned int*)(pRam+base);
-			
-		}
-		else if (!((index=(base^0x03000000)) & ~0xFFFFF) && !(((base+68)^0x03000000) & ~0xFFFFF)) //rom
-		{
-			if(!gSecondROM) // 2nd rom
-			    return (unsigned int*)(pRom+index);
-			else
-			    return (unsigned int*)(pRom+index+1024*1024);
-		}
-	}
-	else
-	{
-		if (base<0x00300000 && ((unsigned int)(base-68))<0x00300000) //dram1&dram2&vram
-		{
-			return (unsigned int*)(pRam+base);
-			
-		}
-		else if (!((index=(base^0x03000000)) & ~0xFFFFF) && !(((base-68)^0x03000000) & ~0xFFFFF)) //rom
-		{
-			if(!gSecondROM) // 2nd rom
-			    return (unsigned int*)(pRom+index);
-			else
-			    return (unsigned int*)(pRom+index+1024*1024);
-		}
-	}
-	return NULL;
-*/
-}
-
-
-__inline unsigned int* ARMCPU::can_multy_write_direct(unsigned int base, unsigned int )
-{
-	return (unsigned int *)DMA->GetRAMPointer( base );
-/*
-	base&=~3;
-	if(opc&(1<<23))
-	{
-		if (base<0x00300000 && (base+68)<0x00300000) //dram1&dram2&vram
-		{
-			return (unsigned int*)(pRam+base);			
-		}
-	}
-	else
-	{
-		if (base<0x00300000 && ((unsigned int)(base-68))<0x00300000) //dram1&dram2&vram
-		{
-			return (unsigned int*)(pRam+base);			
-		}
-	}
-	return NULL;
-*/
 }
