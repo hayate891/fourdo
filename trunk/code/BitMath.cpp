@@ -56,3 +56,22 @@ wxString UintToHexString (uint value)
    
    return ret;
 }
+
+std::string ReadSwappedString(char* buffer)
+{
+    char*       tempBuf;
+    uint32      buffSize;
+    std::string retval;
+    uint32      nullchar;
+    
+    for( nullchar = 0; buffer[nullchar]!='\0'; nullchar++ );
+    buffSize = WordAlign(nullchar)+4;
+    tempBuf = new char[buffSize];
+    memcpy( tempBuf, buffer, buffSize );
+    
+    ByteSwapMem( (uint32*)tempBuf, buffSize );
+    retval = tempBuf;
+    delete[] tempBuf;
+    
+    return retval;
+}

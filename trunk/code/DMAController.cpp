@@ -48,7 +48,7 @@ uchar DMAController::GetByte(uint address)
 	if   ( ( address & 0xFFE00000) == 0x00000000 )
 	{
 		// DRAM
-		return m_DRAM[ address ];
+		return m_DRAM[ address ^ 0x3 ];
 	}
 	else if( address >= 0x00200000 && address <= 0x002FFFFF )
 	{
@@ -91,8 +91,8 @@ uint DMAController::GetWord( uint address )
 	if   ( ( address & 0xFFE00000) == 0x00000000 )
 	{
 		// DRAM
-		address -= address % 4;
-		return ( m_DRAM[ address ] << 24 ) + ( m_DRAM[ address + 1 ] << 16 ) + ( m_DRAM[ address + 2 ] << 8 ) + m_DRAM[ address + 3 ];
+		address = WordAlign( address );
+		return ( *((uint32*)(&m_DRAM[address])) );
 	}
 	else if( address >= 0x00200000 && address <= 0x002FFFFF )
 	{
@@ -137,7 +137,7 @@ void DMAController::SetByte( uint address, uchar value )
 	if   ( ( address & 0xFFE00000 ) == 0x00000000 )
 	{
 		// DRAM
-		m_DRAM[ address ] = value;
+		m_DRAM[ address ^ 0x3 ] = value;
 	}
 	else if( address >= 0x00200000 && address <= 0x002FFFFF )
 	{
@@ -178,11 +178,8 @@ void DMAController::SetWord( uint address, uint value )
 	if    ( ( address & 0xFFE00000 ) == 0x00000000 )
 	{
 		// DRAM
-		address -= address % 4;
-		m_DRAM[ address     ] = ( uchar )( ( value & 0xFF000000 ) >> 24 );
-		m_DRAM[ address + 1 ] = ( uchar )( ( value & 0x00FF0000 ) >> 16 );
-		m_DRAM[ address + 2 ] = ( uchar )( ( value & 0x0000FF00 ) >> 8  );
-		m_DRAM[ address + 3 ] = ( uchar )(   value & 0x000000FF );
+		address = WordAlign( address );
+		*((uint32*)(&m_DRAM[address])) = value;
 	}
 	else if( address >= 0x00200000 && address <= 0x002FFFFF )
 	{

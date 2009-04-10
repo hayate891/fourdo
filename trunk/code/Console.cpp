@@ -1,6 +1,7 @@
 #include "Console.h"
 
 #include "filesystem/file.h"
+#include "BitMath.h"
 
 #define  ROM_LOAD_ADDRESS  0x00100000
 
@@ -57,8 +58,9 @@ bool Console::loadIso( wxString fileName )
 
 	// Load it into memory.
 	f.read( mDMA->GetRAMPointer( ROM_LOAD_ADDRESS ), f.getFileSize (), &bytesRead );
-	
+	ByteSwapMem( (uint32*)mDMA->GetRAMPointer( ROM_LOAD_ADDRESS ), f.getFileSize() );	
 
+	#ifdef JOHNNYMODE
 	//..................................................................//
 	//..................................................................//
 	//..................................................................//
@@ -70,11 +72,13 @@ bool Console::loadIso( wxString fileName )
 	file = fopen("C:\\FourDO\\roms\\SDA_RAM.bin", "rb");
 	fseek( file, READ_START, SEEK_SET );
 	fread( (void*)mDMA->GetRAMPointer(READ_START), READ_LENGTH, 1, file );
+	ByteSwapMem( (uint32*)mDMA->GetRAMPointer( READ_START ), READ_LENGTH );	
 	fclose(file);
 	//..................................................................//
 	//..................................................................//
 	//..................................................................//
 	//..................................................................//
+	#endif
 	
 
 	///////////////////////////////////////////////////
@@ -107,7 +111,7 @@ bool Console::loadIso( wxString fileName )
 	///////////////////////////////////////////////////
 	// Put some crap on the USR mode stack that is 
 	// normally there by the time LaunchMe is run
-	sprintf( (char*)mDMA->GetRAMPointer( mCPU->ARM.USER[13] ), "$app/Launchme" );
+	//sprintf( (char*)mDMA->GetRAMPointer( mCPU->ARM.USER[13] ), "$app/Launchme" );
 	
 	///////////////////////////////////////////////////
 	// Create a fake kernel table 
@@ -124,12 +128,15 @@ bool Console::loadBinary( wxString fileName )
 	// Load the code into memory
 	if( !file.Open( fileName ) )
 		return false;
-	
+
 	if( file.Read( mDMA->GetRAMPointer( ROM_LOAD_ADDRESS ), file.Length () ) == wxInvalidOffset )
 		return false;
 	
+	// Do an endian swap on the loaded code.
+	ByteSwapMem( (uint32*)mDMA->GetRAMPointer( ROM_LOAD_ADDRESS ), file.Length () );
+	
 	file.Close();
-
+	
 	// Set PC
 	mCPU->SetPC( ROM_LOAD_ADDRESS );
 	
