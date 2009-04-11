@@ -384,6 +384,14 @@
 					Name="Kernel"
 					>
 					<File
+						RelativePath=".\Kernel.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Kernel.hpp"
+						>
+					</File>
+					<File
 						RelativePath=".\KernelFaker.cpp"
 						>
 					</File>

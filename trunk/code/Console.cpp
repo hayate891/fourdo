@@ -2,6 +2,7 @@
 
 #include "filesystem/file.h"
 #include "BitMath.h"
+#include "Kernel.hpp"
 
 #define  ROM_LOAD_ADDRESS  0x00100000
 
@@ -74,6 +75,8 @@ bool Console::loadIso( wxString fileName )
 	fread( (void*)mDMA->GetRAMPointer(READ_START), READ_LENGTH, 1, file );
 	ByteSwapMem( (uint32*)mDMA->GetRAMPointer( READ_START ), READ_LENGTH );	
 	fclose(file);
+	Kernel::getInstance()->init( mDMA, mCPU );
+	
 	//..................................................................//
 	//..................................................................//
 	//..................................................................//
