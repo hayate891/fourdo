@@ -2,7 +2,7 @@
 #define _INC_KERNEL
 
 #include "ARMCPU.h"
-#include "DMAController.h"
+#include "DMA.hpp"
 
 #include "KernelTypes.hpp"
 
@@ -20,11 +20,11 @@ private:
 ////////////////////////////////
 // Other, normal implementation
 public:
-    void init( DMAController* aDMA, ARMCPU* aCPU );
+    void init( DMA* aDMA, ARMCPU* aCPU );
     KernelStruct*  getData();
 
 protected:
-    DMAController* mDMA;
+    DMA*           mDMA;
     ARMCPU*        mCPU;
 
     KernelStruct*  mKernelStruct;

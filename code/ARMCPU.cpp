@@ -836,22 +836,22 @@ return 0;
 
 void __inline __fastcall ARMCPU::mwritew(unsigned int addr, unsigned int val)
 {
-DMA->SetWord( addr, val );
+DMA->setWord( addr, val );
 }
 
 unsigned int __inline __fastcall ARMCPU::mreadw(unsigned int addr)
 {
-return (int) DMA->GetWord( addr );
+return (int) DMA->getWord( addr );
 }
 
 void __inline __fastcall ARMCPU::mwriteb(unsigned int addr, unsigned int val)
 {
-DMA->SetByte( addr, ( unsigned char ) val )  ;
+DMA->setByte( addr, ( unsigned char ) val )  ;
 }
 
 unsigned int __inline __fastcall ARMCPU::mreadb(unsigned int addr)
 {
-return (int) DMA->GetByte ( addr );
+return (int) DMA->getByte ( addr );
 }
 
 int __fastcall ARMCPU::Execute(unsigned int MCLKs)

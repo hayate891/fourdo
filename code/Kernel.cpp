@@ -11,18 +11,20 @@ Kernel* Kernel::getInstance()
         mInstance = new Kernel();
     return mInstance;
 }
+
+
+////////////////////////////////
+// Other, normal implementation
 Kernel::Kernel() 
 {
 }
 
-////////////////////////////////
-// Other, normal implementation
-void Kernel::init( DMAController* aDMA, ARMCPU* aCPU )
+void Kernel::init( DMA* aDMA, ARMCPU* aCPU )
 {
     mDMA = aDMA;
     mCPU = aCPU;
     
-    mKernelStruct = (KernelStruct*)(mDMA->GetRAMPointer(KernelFaker::getFakeKernelBase()));
+    mKernelStruct = (KernelStruct*)(mDMA->getPtr(KernelFaker::getFakeKernelBase()));
 }
 
 KernelStruct* Kernel::getData()

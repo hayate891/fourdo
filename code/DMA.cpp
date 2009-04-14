@@ -1,4 +1,4 @@
-#include "DMAController.h"
+#include "DMA.hpp"
 
 #include "BitMath.h"
 #include <cstdio>
@@ -16,51 +16,68 @@ AM_RANGE(0x03300000, 0x033FFFFF) AM_READWRITE(madam_r, madam_w)            // ad
 AM_RANGE(0x03400000, 0x034FFFFF) AM_READWRITE(clio_r, clio_w)              // io controller
 */
 
-DMAController::DMAController()
+////////////////////////////////
+// Singleton implementation
+DMA* DMA::mInstance = NULL;
+DMA* DMA::getInstance() 
 {
-	// Constructor
+    if (mInstance == NULL) 
+        mInstance = new DMA();
+    return mInstance;
+}
+
+////////////////////////////////
+// Other, normal implementation
+DMA::DMA()
+{
+    mInitialized = false;
+}
+
+DMA::~DMA()
+{
+	delete mDRAM;
+	delete mVRAM;
+	delete mBIOS;
+}
+
+void DMA::init()
+{
+    if( mInitialized )
+    {
+        delete mDRAM;
+        delete mVRAM;
+        delete mBIOS;
+    }
+    
+    mInitialized = true;
 	
-	m_DRAM = new uchar[ DRAM_SIZE ];
-	m_VRAM = new uchar[ VRAM_SIZE ];
-	m_BIOS = new uchar[ BIOS_SIZE ];
-	
-	Reset();
+	mDRAM = new uchar[ DRAM_SIZE ];
+	mVRAM = new uchar[ VRAM_SIZE ];
+	mBIOS = new uchar[ BIOS_SIZE ];
+
+	memset( mDRAM, 0, DRAM_SIZE );
+	memset( mVRAM, 0, VRAM_SIZE );
+	memset( mBIOS, 0, BIOS_SIZE );
 }
 
-DMAController::~DMAController()
-{
-	// Destructor
-	delete m_DRAM;
-	delete m_VRAM;
-	delete m_BIOS;
-}
-
-void DMAController::Reset()
-{
-	// Potentially pointless initialization.
-	memset( m_DRAM, 0, DRAM_SIZE );
-	memset( m_VRAM, 0, VRAM_SIZE );
-	memset( m_BIOS, 0, BIOS_SIZE );
-}
-
-uchar DMAController::GetByte(uint address)
+uchar DMA::getByte(uint address)
 {
 	if   ( ( address & 0xFFE00000) == 0x00000000 )
 	{
 		// DRAM
-		return m_DRAM[ address ^ 0x3 ];
+		return mDRAM[ address ^ 0x3 ];
 	}
 	else if( address >= 0x00200000 && address <= 0x002FFFFF )
 	{
 		// VRAM
 		address -= 0x00200000;
-		return m_VRAM[ address ];
+		return mVRAM[ address ];
 	}
 	else if( address >= 0x03000000 && address <= 0x030FFFFF )
 	{
 		// BIOS
 		address -= 0x03000000;
-		return m_BIOS[ address ];
+		return mBIOS[ address ];
 	}
 	else if( address >= 0x03140000 && address <= 0x0315FFFF )
 	{
@@ -86,27 +103,27 @@ uchar DMAController::GetByte(uint address)
 	return 0;
 }
 
-uint DMAController::GetWord( uint address )
+uint DMA::getWord( uint address )
 {
 	if   ( ( address & 0xFFE00000) == 0x00000000 )
 	{
 		// DRAM
 		address = WordAlign( address );
-		return ( *((uint32*)(&m_DRAM[address])) );
+		return ( *((uint32*)(&mDRAM[address])) );
 	}
 	else if( address >= 0x00200000 && address <= 0x002FFFFF )
 	{
 		// VRAM
 		address -= 0x00200000;
 		address -= address % 4;
-		return ( m_VRAM[ address ] << 24 ) + ( m_VRAM[ address + 1 ] << 16 ) + ( m_VRAM[ address + 2 ] << 8 ) + m_VRAM[ address + 3 ];
+		return ( mVRAM[ address ] << 24 ) + ( mVRAM[ address + 1 ] << 16 ) + ( mVRAM[ address + 2 ] << 8 ) + mVRAM[ address + 3 ];
 	}
 	else if( address >= 0x03000000 && address <= 0x030FFFFF )
 	{
 		// BIOS
 		address -= 0x03000000;
 		address -= address % 4;
-		return ( m_BIOS[ address ] << 24 ) + ( m_BIOS[ address + 1 ] << 16 ) + ( m_BIOS[ address + 2 ] << 8 ) + m_BIOS[ address + 3 ];
+		return ( mBIOS[ address ] << 24 ) + ( mBIOS[ address + 1 ] << 16 ) + ( mBIOS[ address + 2 ] << 8 ) + mBIOS[ address + 3 ];
 	}
 	else if( address >= 0x03140000 && address <= 0x0315FFFF )
 	{
@@ -132,24 +149,24 @@ uint DMAController::GetWord( uint address )
 	return 0;
 }
 
-void DMAController::SetByte( uint address, uchar value )
+void DMA::setByte( uint address, uchar value )
 {
 	if   ( ( address & 0xFFE00000 ) == 0x00000000 )
 	{
 		// DRAM
-		m_DRAM[ address ^ 0x3 ] = value;
+		mDRAM[ address ^ 0x3 ] = value;
 	}
 	else if( address >= 0x00200000 && address <= 0x002FFFFF )
 	{
 		// VRAM
 		address -= 0x00200000;
-		m_VRAM[ address ] = value;
+		mVRAM[ address ] = value;
 	}
 	else if( address >= 0x03000000 && address <= 0x030FFFFF )
 	{
 		// BIOS
 		address -= 0x03000000;
-		m_BIOS[ address ] = value;
+		mBIOS[ address ] = value;
 	}
 	else if( address >= 0x03140000 && address <= 0x0315FFFF )
 	{
@@ -173,33 +190,33 @@ void DMAController::SetByte( uint address, uchar value )
 	}
 }
 
-void DMAController::SetWord( uint address, uint value )
+void DMA::setWord( uint address, uint value )
 {
 	if    ( ( address & 0xFFE00000 ) == 0x00000000 )
 	{
 		// DRAM
 		address = WordAlign( address );
-		*((uint32*)(&m_DRAM[address])) = value;
+		*((uint32*)(&mDRAM[address])) = value;
 	}
 	else if( address >= 0x00200000 && address <= 0x002FFFFF )
 	{
 		// VRAM
 		address -= 0x00200000;
 		address -= address % 4;
-		m_VRAM[ address     ] = ( uchar )( ( value & 0xFF000000 ) >> 24 );
-		m_VRAM[ address + 1 ] = ( uchar )( ( value & 0x00FF0000 ) >> 16 );
-		m_VRAM[ address + 2 ] = ( uchar )( ( value & 0x0000FF00 ) >> 8  );
-		m_VRAM[ address + 3 ] = ( uchar )(   value & 0x000000FF );
+		mVRAM[ address     ] = ( uchar )( ( value & 0xFF000000 ) >> 24 );
+		mVRAM[ address + 1 ] = ( uchar )( ( value & 0x00FF0000 ) >> 16 );
+		mVRAM[ address + 2 ] = ( uchar )( ( value & 0x0000FF00 ) >> 8  );
+		mVRAM[ address + 3 ] = ( uchar )(   value & 0x000000FF );
 	}
 	else if( address >= 0x03000000 && address <= 0x030FFFFF )
 	{
 		// BIOS
 		address -= 0x03000000;
 		address -= address % 4;
-		m_BIOS[ address     ] = ( uchar )( ( value & 0xFF000000 ) >> 24 );
-		m_BIOS[ address + 1 ] = ( uchar )( ( value & 0x00FF0000 ) >> 16 );
-		m_BIOS[ address + 2 ] = ( uchar )( ( value & 0x0000FF00 ) >> 8  );
-		m_BIOS[ address + 3 ] = ( uchar )(   value & 0x000000FF );
+		mBIOS[ address     ] = ( uchar )( ( value & 0xFF000000 ) >> 24 );
+		mBIOS[ address + 1 ] = ( uchar )( ( value & 0x00FF0000 ) >> 16 );
+		mBIOS[ address + 2 ] = ( uchar )( ( value & 0x0000FF00 ) >> 8  );
+		mBIOS[ address + 3 ] = ( uchar )(   value & 0x000000FF );
 	}
 	else if( address >= 0x03140000 && address <= 0x0315FFFF )
 	{
@@ -223,21 +240,21 @@ void DMAController::SetWord( uint address, uint value )
 	}
 }
 
-uchar* DMAController::GetRAMPointer( uint address )
+uchar* DMA::getPtr( uint address )
 {
 	if( address >= 0x03000000 && address <= 0x030FFFFF )
 	{
 		// BIOS
-		return &( m_BIOS[ address - 0x03000000 ] );
+		return &( mBIOS[ address - 0x03000000 ] );
 	}
 	else if( address >= 0x00200000 && address <= 0x002FFFFF )
 	{
 		// VRAM
-		return &( m_VRAM[ address - 0x00200000 ] );
+		return &( mVRAM[ address - 0x00200000 ] );
 	}
 	else
 	{
 		// just use DRAM
-		return &( m_DRAM[ address ] );
+		return &( mDRAM[ address ] );
 	}
 }

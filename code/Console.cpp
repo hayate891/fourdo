@@ -8,11 +8,15 @@
 
 Console::Console ()
 {
-   // Constructor
-   mDMA = new DMAController ();
+   ////////////////////////
+   // Initialize DMA
+   DMA* dma = DMA::getInstance();
+   dma->init();
    
+   ////////////////////////
+   // Initialize CPU
    mCPU = new ARMCPU ();
-   mCPU->DMA = mDMA;
+   mCPU->DMA = dma;
    
    mKernelFaker = new KernelFaker();
    
@@ -22,24 +26,18 @@ Console::Console ()
 Console::~Console ()
 {
    // Destructor
-   delete mDMA;
    delete mCPU;
 }
 
 void Console::Reset()
 {
+   DMA::getInstance()->init();
    mCPU->Reset();
-   mDMA->Reset();
 }
 
 ARMCPU* Console::CPU ()
 {
    return mCPU;
-}
-
-DMAController* Console::DMA ()
-{
-   return mDMA;
 }
 
 bool Console::loadIso( wxString fileName )
@@ -48,6 +46,8 @@ bool Console::loadIso( wxString fileName )
 	// Actions taken here should emulate the behavior of
 	// a 3DO that has set up the operating system for
 	// the loaded game
+	
+	DMA* dma = DMA::getInstance();
 	
 	///////////////////////////////////////////////////
 	// Open the Launchme of this CD image
@@ -58,8 +58,8 @@ bool Console::loadIso( wxString fileName )
 		return false;
 
 	// Load it into memory.
-	f.read( mDMA->GetRAMPointer( ROM_LOAD_ADDRESS ), f.getFileSize (), &bytesRead );
-	ByteSwapMem( (uint32*)mDMA->GetRAMPointer( ROM_LOAD_ADDRESS ), f.getFileSize() );	
+	f.read( dma->getPtr( ROM_LOAD_ADDRESS ), f.getFileSize (), &bytesRead );
+	ByteSwapMem( (uint32*)dma->getPtr( ROM_LOAD_ADDRESS ), f.getFileSize() );	
 
 	#ifdef JOHNNYMODE
 	//..................................................................//
@@ -72,10 +72,10 @@ bool Console::loadIso( wxString fileName )
 	FILE* file;
 	file = fopen("C:\\FourDO\\roms\\SDA_RAM.bin", "rb");
 	fseek( file, READ_START, SEEK_SET );
-	fread( (void*)mDMA->GetRAMPointer(READ_START), READ_LENGTH, 1, file );
-	ByteSwapMem( (uint32*)mDMA->GetRAMPointer( READ_START ), READ_LENGTH );	
+	fread( (void*)dma->getPtr(READ_START), READ_LENGTH, 1, file );
+	ByteSwapMem( (uint32*)dma->getPtr( READ_START ), READ_LENGTH );	
 	fclose(file);
-	Kernel::getInstance()->init( mDMA, mCPU );
+	Kernel::getInstance()->init( DMA::getInstance(), mCPU );
 	
 	//..................................................................//
 	//..................................................................//
@@ -114,17 +114,19 @@ bool Console::loadIso( wxString fileName )
 	///////////////////////////////////////////////////
 	// Put some crap on the USR mode stack that is 
 	// normally there by the time LaunchMe is run
-	//sprintf( (char*)mDMA->GetRAMPointer( mCPU->ARM.USER[13] ), "$app/Launchme" );
+	//sprintf( (char*)dma->getPtr( mCPU->ARM.USER[13] ), "$app/Launchme" );
 	
 	///////////////////////////////////////////////////
 	// Create a fake kernel table 
-	mKernelFaker->init( mDMA );
+	mKernelFaker->init( dma );
 	
 	return true;
 }
 
 bool Console::loadBinary( wxString fileName )
 {
+	DMA* dma = DMA::getInstance();
+	
 	// Open a code file.
 	wxFile file;
 	
@@ -132,11 +134,11 @@ bool Console::loadBinary( wxString fileName )
 	if( !file.Open( fileName ) )
 		return false;
 
-	if( file.Read( mDMA->GetRAMPointer( ROM_LOAD_ADDRESS ), file.Length () ) == wxInvalidOffset )
+	if( file.Read( dma->getPtr( ROM_LOAD_ADDRESS ), file.Length () ) == wxInvalidOffset )
 		return false;
 	
 	// Do an endian swap on the loaded code.
-	ByteSwapMem( (uint32*)mDMA->GetRAMPointer( ROM_LOAD_ADDRESS ), file.Length () );
+	ByteSwapMem( (uint32*)dma->getPtr( ROM_LOAD_ADDRESS ), file.Length () );
 	
 	file.Close();
 	

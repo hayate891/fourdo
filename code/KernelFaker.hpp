@@ -2,7 +2,7 @@
 #define _INC_KERNELFAKER
 
 #include "types.h"
-#include "DMAController.h"
+#include "DMA.hpp"
 
 typedef uint32 swiCode; enum {
 	SWI_NUM_UNKNOWN_KERNEL_ENTRY  = 0x0080000,
@@ -61,14 +61,14 @@ public:
 	KernelFaker ();
 	~KernelFaker();
 
-	void init( DMAController* aDMA );
+	void init( DMA* aDMA );
 	
 	static uint32 getFakeKernelBase();
 
 protected:
     void InitializeFakeKernel();
     
-    DMAController* mDMA;
+    DMA* mDMA;
 };
 
 #endif //_INC_KERNELFAKER
