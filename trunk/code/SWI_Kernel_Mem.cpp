@@ -1,9 +1,18 @@
 #include "SWI_Kernel.hpp"
 
+#include "Kernel.hpp"
 #include "KernelFaker.hpp"
+#include "KernelTypes.hpp"
 #include "BitMath.h"
 
 #pragma warning (disable : 4100) // Disable damned "unused param" warnings.
+
+typedef uint8 AllocType; enum
+{
+    ALLOC_ANY = 0,
+    ALLOC_DRAM = 1,
+    ALLOC_VRAM = 2
+};
 
 // Allocation
 MemPtr KRN_malloc( int32 size )
@@ -11,8 +20,62 @@ MemPtr KRN_malloc( int32 size )
 	return NULL;
 }
 
-MemPtr KRN_AllocMem( int32 s, uint32 t )
+MemPtr KRN_AllocMem( int32 size, uint32 flags )
 {
+    Kernel* kernel = Kernel::getInstance();
+    
+    //////////////////////////////
+    // Get allocation type...
+    AllocType allocType;
+    if( flags & MEMTYPE_VRAM )
+    {
+        allocType = ALLOC_VRAM;
+        
+        // TODO: Add VRAM bank selection here.
+    }
+    else if( flags & MEMTYPE_DRAM )
+    {
+        allocType = ALLOC_DRAM;
+    }
+    else
+    {
+        allocType = ALLOC_ANY;
+    }
+    
+    //////////////////////////////
+    // Extra options...
+    
+    if( flags & MEMTYPE_STARTPAGE )
+    {
+        // Allocate along 2k boundary
+        if( flags & MEMTYPE_SYSTEMPAGESIZE )
+        {
+            // Allocate along a page boundary
+        }
+    }
+    
+    if( flags & MEMTYPE_MYPOOL )
+    {
+        // TODO: Don't allocate extra pages in this case.
+    }
+    
+    if( flags & MEMTYPE_FROMTOP )
+    {
+        // TODO: Allocate from the top instead of the bottom.
+    }
+    
+    
+    //////////////////////////////
+    // Allocate memory from available memory list.
+    
+    
+    
+    //////////////////////////////
+    if( flags & MEMTYPE_FILL )
+    {
+        // TODO: Fill memory with value!
+    }
+
 	return NULL;
 }
 
