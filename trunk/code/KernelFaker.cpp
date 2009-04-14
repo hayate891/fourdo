@@ -85,7 +85,7 @@ uint32 KernelFaker::getFakeKernelBase()
     return FAKE_KERNEL_BASE;
 }
 
-void KernelFaker::init( DMAController* aDMA )
+void KernelFaker::init( DMA* aDMA )
 {
     mDMA = aDMA;
     
@@ -99,8 +99,8 @@ void KernelFaker::InitializeFakeKernel()
 	uint32* handlerPtr;
 	uint32* handlerPtrBase;
 	
-	tablePtrBase   = (uint32*)mDMA->GetRAMPointer( FAKE_KERNEL_BASE );
-	handlerPtrBase = (uint32*)mDMA->GetRAMPointer( FAKE_HANDLER_BASE );
+	tablePtrBase   = (uint32*)mDMA->getPtr( FAKE_KERNEL_BASE );
+	handlerPtrBase = (uint32*)mDMA->getPtr( FAKE_HANDLER_BASE );
 	
 	///////////////////////////////////////////
 	// First, initialize all table entries to contain pointers to 

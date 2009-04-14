@@ -5,7 +5,7 @@
 #include <cstdio>
 
 #include "KernelTypes.hpp"
-#include "DMAController.h"
+#include "DMA.hpp"
 
 ///////////////////////////////////////////////////////////
 // GENERAL

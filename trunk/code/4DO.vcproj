@@ -353,11 +353,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\DMAController.cpp"
+					RelativePath=".\DMA.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\DMAController.h"
+					RelativePath=".\DMA.hpp"
 					>
 				</File>
 			</Filter>

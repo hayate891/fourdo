@@ -5,7 +5,7 @@
 
 #include "types.h"
 #include "ARMCPU.h"
-#include "DMAController.h"
+#include "DMA.hpp"
 #include "KernelFaker.hpp"
 
 //////////////////////////////////////////////////
@@ -17,7 +17,6 @@ public:
    ~Console ();
    
    ARMCPU*         CPU ();
-   DMAController*  DMA ();
    
    bool loadIso( wxString fileName );
    bool loadBinary( wxString fileName );
@@ -26,7 +25,6 @@ public:
 
 protected:
    ARMCPU*         mCPU;
-   DMAController*  mDMA;
    KernelFaker*    mKernelFaker;
 };
 

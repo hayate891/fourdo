@@ -64,7 +64,7 @@ MainFrame::MainFrame( wxCmdLineParser* parser )
 	this->InitializeMenu ();
 	
 	wxBoxSizer* mainSizer = new wxBoxSizer( wxHORIZONTAL );
-	ctlFourDOCanvas = new FourDOCanvas( m_con->DMA()->GetRAMPointer( 0x002c0000 ), this );
+	ctlFourDOCanvas = new FourDOCanvas( DMA::getInstance()->getPtr( 0x002c0000 ), this );
 	ctlFourDOCanvas->SetBackgroundColour( *wxBLACK );
 	mainSizer->Add( ctlFourDOCanvas, 1, wxEXPAND, 0, NULL );
 

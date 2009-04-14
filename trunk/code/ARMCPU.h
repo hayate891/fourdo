@@ -17,7 +17,7 @@
 #include <math.h>
 #include "types.h"
 #include "ARMRegisters.h"
-#include "DMAController.h"
+#include "DMA.hpp"
 
 #ifdef GENRE_UNIX
 	#define __fastcall __attribute__((fastcall)) 
@@ -29,7 +29,7 @@ public:
 	ARMCPU();
 	~ARMCPU();
 
-	DMAController*  DMA;
+    DMA*            DMA;
 	ARMRegisters    ARM;
 
 	unsigned int GetFIQ();
@@ -41,7 +41,7 @@ public:
 	int __fastcall Execute( unsigned int MCLKs );
 	void SetCPSR( unsigned int a );
 	
-private:
+protected:
 	__inline bool ALU_Exec(uint32 inst, uint8 opc, uint32 op1, uint32 op2, uint32 *Rd);
 	void inline __fastcall decode_swi(unsigned int i);
 
