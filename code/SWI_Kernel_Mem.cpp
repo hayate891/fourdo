@@ -23,6 +23,7 @@ MemPtr KRN_malloc( int32 size )
 MemPtr KRN_AllocMem( int32 size, uint32 flags )
 {
     Kernel* kernel = Kernel::getInstance();
+    TaskStruct* currentTask;
     
     //////////////////////////////
     // Get allocation type...
