@@ -7,8 +7,9 @@ typedef uint32 Err;
 
 typedef uint32 Item;
 typedef uint32 ItemPtr;
-
 typedef uint32 MemPtr;
+
+typedef uint32 MemHdrPtr;
 typedef uint32 MemListPtr;
 typedef uint32 MemInfoPtr;
 typedef uint32 ListPtr;
@@ -16,12 +17,11 @@ typedef uint32 TagArgPtr;
 typedef uint32 FunctionPtr;
 typedef uint32 TaskPtr;
 typedef uint32 NodePtr;
+typedef uint32 MinNodePtr;
 typedef uint32 CharPtr;
 typedef uint32 FuncPtr;
 
 typedef void List;
-typedef void MemList;
-typedef void MemInfo;
 typedef void TagArg;
 
 //////////////////////////////////////////////////////////////////////////
@@ -99,6 +99,72 @@ typedef struct
     MemPtr          f_DebugTable;
     int32        	reserved[7];
 } FolioStruct;
+
+typedef struct
+{
+	MinNodePtr      n_Next;
+	MinNodePtr      n_Prev;
+} MinNodeStruct;
+
+typedef struct
+{
+    int32           tv_sec;             /* seconds */
+    int32           tv_usec;            /* and microseconds */
+} TimeValStruct;
+
+typedef struct MemList
+{
+	NodeStruct      meml_n;	            /* need to link these together */
+	uint32          meml_Types;	        /* copy of meml_mh->memh_Types;*/
+	MemPtr          meml_OwnBits;	    /* mem we own */
+	MemPtr          meml_WriteBits;	    /* mem we can write to */
+	MemHdrPtr       meml_MemHdr;
+	ListPtr         meml_l;
+	Item            meml_Sema4;
+	uint8           meml_OwnBitsSize;	/* in uint32s (fd_set) */
+	uint8           meml_Reserved[3];
+} MemListStruct;
+
+typedef struct
+{
+    ItemNodeStruct  t;
+    TaskPtr         t_ThreadTask;	    /* Am I a thread of what task? */
+    ItemPtr         t_ResourceTable;	/* list of Items we need to clean up */
+    int32	        t_ResourceCnt;	    /* maxumum number of slots in ResourceTable */
+    uint32	        t_WaitBits;	        /* What will wake us up */
+    uint32	        t_SigBits;
+    uint32	        t_AllocatedSigs;
+    MemPtr	        t_StackBase;	    /* ptr to Base of stack */
+    int32	        t_StackSize;
+    uint32	        t_regs[13];	        /* all current mode registers */
+    MemPtr          t_sp;	            /* r13 */
+    uint32	        t_lk;	            /* r14 */
+    uint32	        t_pc;	            /* r15 */
+    uint32	        t_psr;		        /* program status register */
+    uint32	        t_Userpsr;	        /* " */
+    MemPtr          t_ssp;		        /* ptr to supervisor stack */
+    MemPtr          t_Usersp;	        /* in case we are in super mode */
+    uint32	        t_Userlk;	        /* " */
+    uint32	        t_Reserved;
+    int32	        t_SuperStackSize;
+    MemPtr          t_SuperStackBase;
+    MemPtr          t_ObsoleteMemProtectBits;	/* mem we can write to */
+                    /* above moved to MemList */
+    ListPtr         t_FreeMemoryLists;	/* task free memory pool */
+    MemPtr          t_FolioData;	    /* preallocated ptrs for */
+                                        /* the first 4 folios */
+
+    uint32	        t_FolioContext;	    /* 32 bits */
+    TimeValStruct   t_ElapsedTime;
+
+    uint32	        t_MaxTicks;	        /* max tics b4 task switch */
+    uint32	        t_MaxUSecs;	        /* Equivalent in usecs */
+    MemPtr          t_PageTable;	    /* Arm600 page table for this task */
+    MemPtr          t_ssl;		        /* ptr to supervisor stack */
+    ListPtr         t_UserStackList;   /* List of available user stacks for this process */
+    uint32	        t_Flags;	        /* more task specific flags */
+    MinNodeStruct   t_TasksLinkNode;    /* Link to the list of all tasks */
+} TaskStruct;
 
 typedef struct
 {
