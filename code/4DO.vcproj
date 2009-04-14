@@ -404,6 +404,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\KernelTypes_Mem.hpp"
+						>
+					</File>
+					<File
 						RelativePath=".\SWI_Kernel.hpp"
 						>
 					</File>

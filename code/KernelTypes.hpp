@@ -1,6 +1,8 @@
 #ifndef _INC_SWI_KERNELTYPES
 #define _INC_SWI_KERNELTYPES
 
+#include "KernelTypes_Mem.hpp"
+
 typedef uint32 Err;
 
 typedef uint32 Item;
