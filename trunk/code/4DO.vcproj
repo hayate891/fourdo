@@ -266,6 +266,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SnazPtr.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\types.h"
 				>
 			</File>

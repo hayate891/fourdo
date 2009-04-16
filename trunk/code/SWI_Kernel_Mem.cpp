@@ -22,8 +22,12 @@ MemPtr KRN_malloc( int32 size )
 
 MemPtr KRN_AllocMem( int32 size, uint32 flags )
 {
+    DMA* dma = DMA::getInstance();
     Kernel* kernel = Kernel::getInstance();
-    TaskStruct* currentTask;
+    //MemListStruct* memfreelists =  kernel->getData()->kb_MemFreeLists
+    //TaskStruct*    currentTask  = (TaskStruct*)   dma->getPtr(kernel->getData()->kb_CurrentTask);
+    TaskStruct* currentTask = kernel->getData()->kb_CurrentTask.get();
+    MemListStruct* memfreelists =  kernel->getData()->kb_MemFreeLists.get();
     
     //////////////////////////////
     // Get allocation type...

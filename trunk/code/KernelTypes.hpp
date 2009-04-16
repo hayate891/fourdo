@@ -2,6 +2,7 @@
 #define _INC_SWI_KERNELTYPES
 
 #include "KernelTypes_Mem.hpp"
+#include "SnazPtr.hpp"
 
 typedef uint32 Err;
 
@@ -168,58 +169,58 @@ typedef struct
 
 typedef struct
 {
-    FolioStruct  kb;
-    ListPtr      kb_RomTags;
-    ListPtr      kb_MemFreeLists;
-    ListPtr      kb_MemHdrList;
-    ListPtr      kb_FolioList;	       /* Libraries */
-    ListPtr      kb_Drivers;
-    ListPtr      kb_Devices;
-    ListPtr      kb_TaskWaitQ;	       /* Tasks waiting for some event */
-    ListPtr      kb_TaskReadyQ;        /* Tasks waiting for CPU time */
-    ListPtr      kb_MsgPorts;	       /* will we be message based? */
-    ListPtr      kb_Semaphores;	       /* will we be message based? */
-    TaskPtr      kb_CurrentTask;	   /* Currently executing Task */
-    MemPtr       kb_InterruptHandlers; // table of nodes (Node**)
-    uint32       kb_TimerBits;	       /* allocated timers/ctrs */
-    uint32       kb_ElapsedQuanta;	   /* timerticks for current task */
-    MemPtr       kb_VRAMHack;
-    MemPtr       kb_ItemTable;	       /* table of ptrs to ItemEntries (ItemEntry**) */
-    int32        kb_MaxItem;
-    uint32       kb_CPUFlags;	       /* various flags for operation */
-    uint8        kb_PleaseReschedule;
-    uint8        kb_FolioTableSize;
-    uint8        kb_Forbid;	           /* software lockout for task swapping */
-    uint8        kb_MaxInterrupts;
-    MemPtr       kb_MacPkt;
-    uint32       kb_Flags;
-    uint32       kb_Reserved;
-    uint32       kb_numticks;	       /* convert secs to ticks numerator */
-    uint32       kb_denomticks;	       /* convert secs to ticks denominator */
-    uint32       kb_Obsolete;	       /* shadow copy of Madam->Msysbits */
-    uint8        kb_VRAMSetSize;
-    uint8        kb_DRAMSetSize;
-    uint8        kb_FolioTaskDataSize; /* lwords */
-    uint8        kb_FolioTaskDataCnt;  /* lwords */
-    MemPtr       kb_DataFolios;        // (struct Folio **)
-    MemPtr       kb_CatchDataAborts;   /* setjmp buf (jmp_buf*) */
-    uint32       kb_QuietAborts;	   /* no messages for these bits */
-    MemPtr       kb_RamDiskAddr;	   /* kernel needs to help RamDevice */
-    int32	     kb_RamDiskSize;
-    ListPtr      kb_ExtendedErrors;	   /* list of extended err tables */
-    uint8	     kb_Resbyte1;
-    uint8	     kb_Resbyte0;
-    uint8      	 kb_ClioRev;
-    uint8      	 kb_MadamRev;
-    Item	     kb_DevSemaphore;	   /* Device List Semaphore */
-    ListPtr      kb_SystemStackList;   /* List of System stacks available */
-    uint32	     kb_Pad;
-    MemPtr       kb_VRAM0;	           /* memory reserved by kernel */
-    uint32	     kb_VRAM0Size;
-    MemPtr       kb_VRAM1;
-    uint32	     kb_VRAM1Size;
-    CharPtr      kb_BootVolumeName;
-    ListPtr      kb_Tasks;		       /* All Tasks in the system */
+    FolioStruct              kb;
+    ListPtr                  kb_RomTags;
+    SnazPtr<MemListStruct>   kb_MemFreeLists;
+    ListPtr                  kb_MemHdrList;
+    ListPtr                  kb_FolioList;	       /* Libraries */
+    ListPtr                  kb_Drivers;
+    ListPtr                  kb_Devices;
+    ListPtr                  kb_TaskWaitQ;	       /* Tasks waiting for some event */
+    ListPtr                  kb_TaskReadyQ;        /* Tasks waiting for CPU time */
+    ListPtr                  kb_MsgPorts;	       /* will we be message based? */
+    ListPtr                  kb_Semaphores;	       /* will we be message based? */
+    SnazPtr<TaskStruct>      kb_CurrentTask;       /* Currently executing Task */
+    MemPtr                   kb_InterruptHandlers; // table of nodes (Node**)
+    uint32                   kb_TimerBits;	       /* allocated timers/ctrs */
+    uint32                   kb_ElapsedQuanta;	   /* timerticks for current task */
+    MemPtr                   kb_VRAMHack;
+    MemPtr                   kb_ItemTable;	       /* table of ptrs to ItemEntries (ItemEntry**) */
+    int32                    kb_MaxItem;
+    uint32                   kb_CPUFlags;	       /* various flags for operation */
+    uint8                    kb_PleaseReschedule;
+    uint8                    kb_FolioTableSize;
+    uint8                    kb_Forbid;	           /* software lockout for task swapping */
+    uint8                    kb_MaxInterrupts;
+    MemPtr                   kb_MacPkt;
+    uint32                   kb_Flags;
+    uint32                   kb_Reserved;
+    uint32                   kb_numticks;	       /* convert secs to ticks numerator */
+    uint32                   kb_denomticks;	       /* convert secs to ticks denominator */
+    uint32                   kb_Obsolete;	       /* shadow copy of Madam->Msysbits */
+    uint8                    kb_VRAMSetSize;
+    uint8                    kb_DRAMSetSize;
+    uint8                    kb_FolioTaskDataSize; /* lwords */
+    uint8                    kb_FolioTaskDataCnt;  /* lwords */
+    MemPtr                   kb_DataFolios;        // (struct Folio **)
+    MemPtr                   kb_CatchDataAborts;   /* setjmp buf (jmp_buf*) */
+    uint32                   kb_QuietAborts;	   /* no messages for these bits */
+    MemPtr                   kb_RamDiskAddr;	   /* kernel needs to help RamDevice */
+    int32	                 kb_RamDiskSize;
+    ListPtr                  kb_ExtendedErrors;	   /* list of extended err tables */
+    uint8	                 kb_Resbyte1;
+    uint8	                 kb_Resbyte0;
+    uint8      	             kb_ClioRev;
+    uint8      	             kb_MadamRev;
+    Item	                 kb_DevSemaphore;	   /* Device List Semaphore */
+    ListPtr                  kb_SystemStackList;   /* List of System stacks available */
+    uint32	                 kb_Pad;
+    MemPtr                   kb_VRAM0;	           /* memory reserved by kernel */
+    uint32	                 kb_VRAM0Size;
+    MemPtr                   kb_VRAM1;
+    uint32	                 kb_VRAM1Size;
+    CharPtr                  kb_BootVolumeName;
+    ListPtr                  kb_Tasks;		       /* All Tasks in the system */
 } KernelStruct;
 
 #endif
