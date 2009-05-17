@@ -24,8 +24,8 @@ namespace fourdo { namespace swi
 	// 
 	// ARM Interrupts
 	// 
-	void SWI_ARM_GetMemoryBaseAddress(ARMRegisters *registers, DMA *dma);
-	void SWI_ARM_HaltExecution(ARMRegisters *registers, DMA *dma);
+	void SWI_ARM_GetMemoryBaseAddress		(ARMRegisters *registers, DMA *dma);
+	void SWI_ARM_HaltExecution				(ARMRegisters *registers, DMA *dma);
 	
 	/////////////////////////////////////////////////////////////////////////
 	// 
@@ -37,7 +37,7 @@ namespace fourdo { namespace swi
 	// FourDO has replaced this table so that these manual kernel calls become
 	// SWI's.
 	// 
-	void SWI_META_ImageEntryPoint(ARMRegisters *registers, DMA *dma);
+	void SWI_META_ImageEntryPoint			(ARMRegisters *registers, DMA *dma);
 
 	/////////////////////////////////////////////////////////////////////////
 	// 
@@ -45,92 +45,170 @@ namespace fourdo { namespace swi
 	// 
 	
 	// kprintf
-	void SWI_KRN_kprintf(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_kprintf					(ARMRegisters *registers, DMA *dma);
 	
 	/////////////////////////
 	// Memory
 	
 	// Allocation
-	void SWI_KRN_malloc              (ARMRegisters *registers, DMA *dma);
-	void SWI_KRN_AllocMem            (ARMRegisters *registers, DMA *dma);
-	void SWI_KRN_AllocMemBlocks      (ARMRegisters *registers, DMA *dma);
-	void SWI_KRN_AllocMemFromMemList (ARMRegisters *registers, DMA *dma);
-	void SWI_KRN_AllocMemFromMemLists(ARMRegisters *registers, DMA *dma);
-	void SWI_KRN_AllocMemList        (ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_malloc						(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_AllocMem					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_AllocMemBlocks				(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_AllocMemFromMemList		(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_AllocMemFromMemLists		(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_AllocMemList				(ARMRegisters *registers, DMA *dma);
 
 	// Deletion
-	void SWI_KRN_free             	 (ARMRegisters *registers, DMA *dma);
-	void SWI_KRN_FreeMem             (ARMRegisters *registers, DMA *dma);
-	void SWI_KRN_FreeMemList      	 (ARMRegisters *registers, DMA *dma);
-	void SWI_KRN_FreeMemToMemList 	 (ARMRegisters *registers, DMA *dma);
-	void SWI_KRN_FreeMemToMemLists	 (ARMRegisters *registers, DMA *dma);
-	void SWI_KRN_ScavengeMem      	 (ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_free             			(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_FreeMem					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_FreeMemList      			(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_FreeMemToMemList 			(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_FreeMemToMemLists			(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_ScavengeMem      			(ARMRegisters *registers, DMA *dma);
 
 	// Memory info
-	void SWI_KRN_AvailMem            (ARMRegisters *registers, DMA *dma);
-	void SWI_KRN_ControlMem          (ARMRegisters *registers, DMA *dma);
-	void SWI_KRN_GetMemAllocAlignment(ARMRegisters *registers, DMA *dma);
-	void SWI_KRN_GetMemTrackSize     (ARMRegisters *registers, DMA *dma);
-	void SWI_KRN_GetMemType          (ARMRegisters *registers, DMA *dma);
-	void SWI_KRN_GetPageSize         (ARMRegisters *registers, DMA *dma);
-	void SWI_KRN_IsMemReadable       (ARMRegisters *registers, DMA *dma);
-	void SWI_KRN_IsMemWritable       (ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_AvailMem					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_ControlMem					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_GetMemAllocAlignment		(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_GetMemTrackSize			(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_GetMemType					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_GetPageSize				(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_IsMemReadable				(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_IsMemWritable				(ARMRegisters *registers, DMA *dma);
 
 	// Memory debugging
-	void SWI_KRN_DumpMemDebug        (ARMRegisters *registers, DMA *dma);
-	void SWI_KRN_CreateMemDebug      (ARMRegisters *registers, DMA *dma);
-	void SWI_KRN_DeleteMemDebug      (ARMRegisters *registers, DMA *dma);
-	void SWI_KRN_SanityCheckMemDebug (ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_DumpMemDebug				(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_CreateMemDebug				(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_DeleteMemDebug				(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_SanityCheckMemDebug		(ARMRegisters *registers, DMA *dma);
 
 	/////////////////////////
 	// Items
 
     // Creating Items
-    void SWI_KRN_CreateBufferedMsg     (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_CreateIOReq           (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_CreateItem            (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_CreateItemVA          (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_CreateMsg             (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_CreateMsgPort         (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_CreateSemaphore       (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_CreateSmallMsg        (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_CreateThread          (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_CreateUniqueMsgPort   (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_CreateUniqueSemaphore (ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_AddHead					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_AddTail					(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_CreateBufferedMsg			(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_CreateIOReq				(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_CreateItem					(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_CreateItemVA				(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_CreateMsg					(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_CreateMsgPort				(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_CreateSemaphore			(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_CreateSizedItem			(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_CreateSmallMsg				(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_CreateThread				(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_CreateUniqueMsgPort		(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_CreateUniqueSemaphore		(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_InsertNodeAfter			(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_InsertNodeBefore			(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_InsertNodeFromHead			(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_InsertNodeFromTail			(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_MkNodeID					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_UniversalInsertNode		(ARMRegisters *registers, DMA *dma);
 
     // Opening Items
-    void SWI_KRN_FindAndOpenDevice     (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_FindAndOpenFolio      (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_FindAndOpenItem       (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_FindAndOpenItemVA     (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_FindAndOpenNamedItem  (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_OpenItem              (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_OpenNamedDevice       (ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_FindAndOpenDevice			(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_FindAndOpenFolio			(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_FindAndOpenItem			(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_FindAndOpenItemVA			(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_FindAndOpenNamedItem		(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_OpenItem					(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_OpenNamedDevice			(ARMRegisters *registers, DMA *dma);
 
     // Managing Items
-    void SWI_KRN_CheckItem             (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_FindDevice            (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_FindFolio             (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_FindItem              (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_FindItemVA            (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_FindMsgPort           (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_FindNamedItem         (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_FindSemaphore         (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_FindTask              (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_FindVersionedItem     (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_LookupItem            (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_SetItemOwner          (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_SetItemPri            (ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_AllocSignal				(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_CallFolio					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_CallFolioRet				(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_CheckIO					(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_CheckItem					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_CompleteIO					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_CountBits					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_DoIO						(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_ffs						(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_FindDevice					(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_FindFolio					(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_FindItem					(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_FindItemVA					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_FindLSB					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_FindMSB					(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_FindMsgPort				(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_FindNamedItem				(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_FindNamedNode				(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_FindNodeFromHead			(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_FindNodeFromTail			(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_FindSemaphore				(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_FindTagArg					(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_FindTask					(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_FindVersionedItem			(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_FirstNode					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_GetBankBits				(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_GetCurrentSignals			(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_GetFolioFunc				(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_GetMsg						(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_GetNodeCount				(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_GetNodePosFromHead			(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_GetNodePosFromTail			(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_GetSysErr					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_GetTagArg					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_GetTaskSignals				(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_GetThisMsg					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_InitList					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_IsEmptyList				(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_IsItemOpened				(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_IsListEmpty				(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_IsNode						(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_IsNodeB					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_LastNode					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_LockItem					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_LockSemaphore				(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_LookupItem					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_MayGetChar					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_NextNode					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_NextTagArg					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_PrevNode					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_PrintError					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_PrintfSysErr				(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_ReadHardwareRandomNumber	(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_ReplyMsg					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_ReplySmallMsg				(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_SampleSystemTime			(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_SampleSystemTimeTV			(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_SendIO						(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_SendMsg					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_SendSignal					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_SendSmallMsg				(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_SetExitStatus				(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_SetFunction				(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_SetItemOwner				(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_SetItemPri					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_SetNodePri					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_UnlockItem					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_UnlockSemaphore			(ARMRegisters *registers, DMA *dma);
 
     // Closing and Deleting Items
-    void SWI_KRN_CloseItem             (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_CloseNamedDevice      (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_DeleteIOReq           (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_DeleteItem            (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_DeleteMsg             (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_DeleteMsgPort         (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_DeleteSemaphore       (ARMRegisters *registers, DMA *dma);
-    void SWI_KRN_DeleteThread          (ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_AbortIO					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_ClearCurrentSignals		(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_CloseItem					(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_CloseNamedDevice			(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_DeleteIOReq				(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_DeleteItem					(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_DeleteMsg					(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_DeleteMsgPort				(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_DeleteSemaphore			(ARMRegisters *registers, DMA *dma);
+    void SWI_KRN_DeleteThread				(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_DumpNode					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_DumpTagList				(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_FreeSignal					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_RemHead					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_RemNode					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_RemTail					(ARMRegisters *registers, DMA *dma);
+
+	// Waiting and Caution Items
+	void SWI_KRN_WaitIO						(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_WaitPort					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_WaitSignal					(ARMRegisters *registers, DMA *dma);
+	void SWI_KRN_Yield						(ARMRegisters *registers, DMA *dma);
 
 /*
 	Item CreateSizedItem(int32 ctype,TagArg *p,int32 size);

@@ -22,12 +22,8 @@ MemPtr KRN_malloc( int32 size )
 
 MemPtr KRN_AllocMem( int32 size, uint32 flags )
 {
-    DMA* dma = DMA::getInstance();
     Kernel* kernel = Kernel::getInstance();
-    //MemListStruct* memfreelists =  kernel->getData()->kb_MemFreeLists
-    //TaskStruct*    currentTask  = (TaskStruct*)   dma->getPtr(kernel->getData()->kb_CurrentTask);
-    TaskStruct* currentTask = kernel->getData()->kb_CurrentTask.get();
-    MemListStruct* memfreelists =  kernel->getData()->kb_MemFreeLists.get();
+    TaskStruct* currentTask;
     
     //////////////////////////////
     // Get allocation type...
@@ -189,6 +185,398 @@ Err KRN_DeleteMemDebug(void)
 Err KRN_SanityCheckMemDebug(const TagArgPtr args)
 {
 	return NULL;
+}
+
+/////////////////////////
+// Items
+
+// Creating Items
+void KRN_AddHead( ListPtr l, NodePtr n )
+{
+	return;
+}
+
+void KRN_AddTail( ListPtr l, NodePtr n )
+{
+    return;
+}
+
+Item KRN_CreateSizedItem( int32 ctype, TagArgPtr p,int32 size )
+{
+	return NULL;
+}
+
+void KRN_InsertNodeAfter(NodePtr oldNode, NodePtr newNode)
+{
+	return;
+}
+
+void KRN_InsertNodeBefore(NodePtr oldNode, NodePtr newNode)
+{
+	return;
+}
+
+void KRN_InsertNodeFromHead( ListPtr l, NodePtr n )
+{
+	return;
+}
+
+void KRN_InsertNodeFromTail( ListPtr l, NodePtr n )
+{
+	return;
+}
+
+int32 KRN_MkNodeID( uint8 a , uint8 b )
+{
+	return NULL;
+}
+
+void KRN_UniversalInsertNode( ListPtr l, NodePtr n, FuncPtr func )
+{
+	return;
+}
+
+// Opening Items
+
+// Managing Items
+int32 KRN_AllocSignal( uint32 sigMask )
+{
+	return NULL;
+}
+
+/*
+void KRN_CallFolio( FolioPtr folio, int32 func, args )
+{
+	return;
+}
+
+
+void KRN_CallFolioRet( FolioPtr folio, int32 func, args, ret, cast )
+{
+	return;
+}
+*/
+
+int32 KRN_CheckIO( Item ior )
+{
+	return NULL;
+}
+
+
+void KRN_CompleteIO( IOReqPtr ior )
+{
+	return;
+}
+
+int KRN_CountBits(uint32 mask)
+{
+	return NULL;
+}
+
+Err KRN_DoIO( Item ior, IOInfoPtr ioiP )
+{
+	return NULL;
+}
+
+int KRN_ffs( uint32 mask )
+{
+	return NULL;
+}
+
+int KRN_FindLSB( uint32 mask )
+{
+	return NULL;
+}
+
+int KRN_FindMSB( uint32 bits )
+{
+	return NULL;
+}
+
+NodePtr KRN_FindNamedNode( ListPtr l, CharPtr name )
+{
+	return NULL;
+}
+
+NodePtr KRN_FindNodeFromHead(ListPtr l, uint32 position)
+{
+	return NULL;
+}
+
+NodePtr KRN_FindNodeFromTail(ListPtr l, uint32 position)
+{
+	return NULL;
+}
+
+TagArgPtr KRN_FindTagArg( TagArgPtr tagList, uint32 tag )
+{
+	return NULL;
+}
+
+NodePtr KRN_FirstNode( ListPtr l )
+{
+	return NULL;
+}
+
+uint32 KRN_GetBankBits( MemPtr a )
+{
+	return NULL;
+}
+
+int32 KRN_GetCurrentSignals( )
+{
+	return NULL;
+}
+
+FuncPtr KRN_GetFolioFunc( FolioPtr folio, int32 func)
+{
+	return NULL;
+}
+
+Item KRN_GetMsg( Item mp )
+{
+	return NULL;
+}
+
+uint32 KRN_GetNodeCount(ListPtr l)
+{
+	return NULL;
+}
+
+int32 KRN_GetNodePosFromHead(ListPtr l, NodePtr n)
+{
+	return NULL;
+}
+
+int32 KRN_GetNodePosFromTail(ListPtr l, NodePtr n)
+{
+	return NULL;
+}
+
+int32 KRN_GetSysErr( CharPtr buff, int32 buffsize, Err err )
+{
+	return NULL;
+}
+
+TagArgPtr KRN_GetTagArg (TagArgPtr tagList, uint32 tag, TagArgPtr defaultValue)
+{
+	return NULL;
+}
+
+int32 KRN_GetTaskSignals( TaskPtr t )
+{
+	return NULL;
+}
+
+Item KRN_GetThisMsg( Item message )
+{
+	return NULL;
+}
+
+void KRN_InitList( ListPtr l, CharPtr name )
+{
+	return;
+}
+
+bool KRN_IsEmptyList( ListPtr l )
+{
+	return NULL;
+}
+
+Err KRN_IsItemOpened( Item task, Item i )
+{
+	return NULL;
+}
+
+bool KRN_IsListEmpty( ListPtr l )
+{
+	return NULL;
+}
+
+bool KRN_IsNode( ListPtr l, NodePtr n )
+{
+	return NULL;
+}
+
+bool KRN_IsNodeB( ListPtr l, NodePtr n )
+{
+	return NULL;
+}
+
+NodePtr KRN_LastNode( ListPtr l )
+{
+	return NULL;
+}
+
+int32 KRN_LockItem( Item s, uint32 flags )
+{
+	return NULL;
+}
+
+int32 KRN_LockSemaphore( Item s, uint32 flags )
+{
+	return NULL;
+}
+
+int KRN_MayGetChar( Item i,Item newOwner )
+{
+	return NULL;
+}
+NodePtr KRN_NextNode( NodePtr n )
+{
+	return NULL;
+}
+
+TagArgPtr KRN_NextTagArg( TagArgPtrPtr tagList )
+{
+	return NULL;
+}
+
+NodePtr KRN_PrevNode( NodePtr node )
+{
+	return NULL;
+}
+
+void KRN_PrintError( CharPtr who, CharPtr what, CharPtr whom, Err err )
+{
+	return;
+}
+
+void KRN_PrintfSysErr( Err err )
+{
+	return;
+}
+
+uint32 KRN_ReadHardwareRandomNumber( )
+{
+	return NULL;
+}
+
+Err KRN_ReplyMsg( Item msg, int32 result, MsgPtr dataptr,int32 datasize )
+{
+	return NULL;
+}
+
+Err KRN_ReplySmallMsg( Item msg, int32 result, uint32 val1, uint32 val2)
+{
+	return NULL;
+}
+
+uint32 KRN_SampleSystemTime( )
+{
+	return NULL;
+}
+
+void KRN_SampleSystemTimeTV( TimeValPtr time )
+{
+	return;
+}
+
+Err KRN_SendIO( Item ior, IOInfoPtr ioiP )
+{
+	return NULL;
+}
+
+Err KRN_SendMsg( Item mp, Item msg, MsgPtr dataptr, int32 datasize )
+{
+	return NULL;
+}
+
+Err KRN_SendSignal( Item task, uint32 sigMask )
+{
+	return NULL;
+}
+
+Err KRN_SendSmallMsg( Item mp, Item msg, uint32 val1, uint32 val2 )
+{
+	return NULL;
+}
+
+Err KRN_SetExitStatus( int32 status )
+{
+	return NULL;
+}
+
+MemPtr KRN_SetFunction( Item, int32 vnum, int32 vtype, SetFuncPtr newfunc )
+{
+	return NULL;
+}
+
+uint8 KRN_SetNodePri( NodePtr n, uint8 newpri )
+{
+	return NULL;
+}
+
+Err KRN_UnlockItem( Item s )
+{
+	return NULL;
+}
+
+Err KRN_UnlockSemaphore( Item s )
+{
+	return NULL;
+}
+
+// Closing and Deleting Items
+Err KRN_AbortIO( Item ior )
+{
+	return NULL;
+}
+
+Err KRN_ClearCurrentSignals( int32 sigMask )
+{
+	return NULL;
+}
+
+void KRN_DumpNode (NodePtr node, CharPtr banner)
+{
+	return;
+}
+
+void KRN_DumpTagList (TagArgPtr tagList, CharPtr desc)
+{
+	return;
+}
+
+Err KRN_FreeSignal( uint32 sigMask )
+{
+	return NULL;
+}
+
+NodePtr KRN_RemHead( ListPtr l )
+{
+	return NULL;
+}
+
+void KRN_RemNode( NodePtr n )
+{
+	return;
+}
+
+NodePtr KRN_RemTail( ListPtr l )
+{
+	return NULL;
+}
+
+// Waiting and Caution Items
+Err KRN_WaitIO( Item ior )
+{
+	return NULL;
+}
+
+Item KRN_WaitPort( Item mp, Item msg )
+{
+	return NULL;
+}
+
+int32 KRN_WaitSignal( uint32 sigMask )
+{
+	return NULL;
+}
+
+void KRN_Yield( )
+{
+	return;
 }
 
 #pragma warning (default : 4100)

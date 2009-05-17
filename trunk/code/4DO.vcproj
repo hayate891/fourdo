@@ -270,6 +270,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SnazString.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SnazString.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\types.h"
 				>
 			</File>
@@ -382,6 +390,10 @@
 				</File>
 				<File
 					RelativePath=".\SWI_Meta.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\SWI_NUM_Stubs.hpp"
 					>
 				</File>
 				<Filter
